@@ -1,0 +1,79 @@
+- Requirements:
+
+ - oscpack 1.0.2    (http://www.audiomulch.com/~rossb/code/oscpack/)
+ - Qt 4.2           (http://trolltech.com)
+ - SuperCollider3   (http://supercollider.sf.net) - You need a build with development files installed.
+ - Boost            (http://www.boost.org/)
+ - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
+ - GraphicsMagick++ (http://www.graphicsmagick.org/)
+ - Pthreads         (http://www.gnu.org/software/libc/)
+ - SndFile          (http://www.mega-nerd.com/libsndfile/)
+-  GLEW             (http://glew.sourceforge.net/)
+
+ Most of these, with the notable exception of oscpack should be available in all major linx distros. On Mac OS X you will have to do some tracking down and installing.
+
+NOTE: You need a special oscpack version for scgraph. You should find this in the directory where you got scgraph from. Future versions of scgraph will ship with their own oscpack version.
+
+NOTE: If you want to use vertex and fragment shaders you must enable both HAVE_SHADERS and HAVE_GLEW in your Makefile.include. Note also, that GLEW must be built with the GLEW_MX preprocessor macro defined as scgraph does use multiple contexts. At the time of this writing the ubuntu packages of GLEW were not built with multi context support.
+
+ if you want the JackClient (which can do fft analysis of audio input over a jack port), then you need:
+
+ - JACK             (http://jackaudio.org)
+ - FFTW3            (http://www.fftw.org/)
+
+
+- How to build
+
+ On the first run of make, a file will be created called
+
+ Makefile.include
+
+ You can add addtitional compiler and linker flags in this file to tweak the build process to your setup. Most notable is the
+
+ PREFIX
+
+ variable (the PREFIX must not containt any "," (that's a single comma) characters). By default, ScGraph is installed to
+
+ /usr/local
+
+ and respective subdirs (bin, share, doc). Simply have a look at the Makefile.include to see what might be needed for your system (Any help on automating this process via tools, like autotools, or scons is very much appreciated)..
+
+ If you installed any of the required packages from source, make sure that pkg-config finds the respective .pc file (e.g. for libsndfile, graphicsmagick++ and jack) by virtur of the PKG_CONFIG_PATH environment variable.
+
+- Caveats
+
+ If you change the makefile (i.e. adding sources) and make seems to mysteriously fail without error, check whether all filenames correspond to the STUFF variable for real. Typos produce the mentioned mysterious failures. I haven't found the issue yet, but i guess it has to do with the dependency tracking or the Makefile.include.
+
+ Also try a 
+
+ make reallyclean all
+
+- What to do if the build succeeded?
+
+  - Add the 
+
+    $(PREFIX)/share/scgraph/sclang
+
+    to your sclang.cfg, so the classes get loaded in your SuperCollider installation.
+
+  - create a directory
+
+    $(HOME)/.scgraph/synthdefs
+
+    and
+
+    $(HOME)/.scgraph/textures
+
+    and 
+
+    $(HOME)/.scgraph/textures/default/
+
+  - Have a look at the examples in 
+
+    $(PREFIX)/share/doc/examples/
+
+    They show you how to make simple animations with scgraph.
+
+
+Have fun,
+Florian Paul Schmidt
