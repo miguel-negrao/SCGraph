@@ -139,8 +139,9 @@ void GLRenderWidget::keyReleaseEvent (QKeyEvent *event)
 	_renderer->keyReleaseEvent (event);
 }
 
+#ifdef HAVE_SHADERS
 GLEWContext *GLRenderWidget::getGlewContext() { return &_glew_context; }
-
+#endif
 
 
 GLMainWindow::GLMainWindow (GLRenderer *renderer) :
