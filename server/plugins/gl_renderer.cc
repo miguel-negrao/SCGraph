@@ -851,7 +851,9 @@ void GLRenderer::visitCullingConst (const Culling *c)
 void GLRenderer::process_g (double delta_t)
 {
 	_delta_t = delta_t;
+#ifdef HAVE_GLEW
 	glewContext = _gl_widget->getGlewContext();
+#endif
 	_gl_widget->updateGL();
 }
 
