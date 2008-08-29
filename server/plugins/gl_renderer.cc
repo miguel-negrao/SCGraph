@@ -25,6 +25,7 @@
 
 #include <QtOpenGL/QGLFormat>
 
+#ifdef HAVE_SHADERS
 /** 
 	A global variable, but don't blame me, blame the 
 	GLEW authors
@@ -36,7 +37,7 @@ extern "C" {
 		return glewContext;
 	}
 }
-
+#endif
 
 
 GLRenderWidget::GLRenderWidget (QWidget *parent, GLRenderer *renderer) :
