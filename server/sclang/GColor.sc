@@ -4,4 +4,9 @@ GColor : UGen {
 	}
 }
 
++ Color {
+	gr {|in|
+		^GColor.gr(in, this.asArray)
+	}
 
+}
