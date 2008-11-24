@@ -1,6 +1,5 @@
 - Requirements:
 
- - oscpack 1.0.2    (http://www.audiomulch.com/~rossb/code/oscpack/)
  - Qt 4.2           (http://trolltech.com)
  - SuperCollider3   (http://supercollider.sf.net) - You need a build with development files installed.
  - Boost            (http://www.boost.org/)
@@ -8,11 +7,8 @@
  - GraphicsMagick++ (http://www.graphicsmagick.org/)
  - Pthreads         (http://www.gnu.org/software/libc/)
  - SndFile          (http://www.mega-nerd.com/libsndfile/)
--  GLEW             (http://glew.sourceforge.net/)
 
- Most of these, with the notable exception of oscpack should be available in all major linx distros. On Mac OS X you will have to do some tracking down and installing.
-
-NOTE: You need a special oscpack version for scgraph. You should find this in the directory where you got scgraph from. Future versions of scgraph will ship with their own oscpack version.
+ Most of these should be available in all major linx distros. On Mac OS X you will have to do some tracking down and installing.
 
 NOTE: If you want to use vertex and fragment shaders you must enable both HAVE_SHADERS and HAVE_GLEW in your Makefile.include. Note also, that GLEW must be built with the GLEW_MX preprocessor macro defined as scgraph does use multiple contexts. At the time of this writing the ubuntu packages of GLEW were not built with multi context support.
 
