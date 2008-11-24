@@ -41,14 +41,14 @@ all: $(PLUGIN_LIBS) plugin_dirs
 
 
 ifeq ($(UNAME),Linux)
-$(PLUGIN_LIBS): %.so: %.cc %.cc %_moc.cc ../unit.h ../graphics_visitor.h ../graphics.h ../graphics_bus.h ../texture_pool.h ../shader_pool.h ../matrix.h ../Makefile
+$(PLUGIN_LIBS): %.so: %.cc %.cc %_moc.cc ../unit.h ../graphics_visitor.h ../graphics.h ../graphics_bus.h ../texture_pool.h ../shader_pool.h ../matrix.h 
 	@echo
 	@echo --- Building plugin: $< \=\> $@
 	$(CXX) $(PLUGIN_COMPILE_FLAGS) $(LINK_FLAGS) -o $@ $*.cc $*_moc.cc $(QT_COMPILE_FLAGS) $(QT_LINK_FLAGS) $(ADDITIONAL_COMPILE_FLAGS) $(ADDITIONAL_LINK_FLAGS) -pthread
 endif
 
 ifeq ($(UNAME),Darwin)
-$(PLUGIN_LIBS): %.bundle: %.cc %.cc %_moc.cc ../unit.h ../graphics_visitor.h ../graphics.h ../graphics_bus.h ../matrix.h ../Makefile
+$(PLUGIN_LIBS): %.bundle: %.cc %.cc %_moc.cc ../unit.h ../graphics_visitor.h ../graphics.h ../graphics_bus.h ../matrix.h 
 	@echo
 	@echo --- Building plugin: $< \=\> $@
 	$(CXX) $(PLUGIN_COMPILE_FLAGS) $(LINK_FLAGS) -o $@ $*.cc $*_moc.cc $(QT_COMPILE_FLAGS) $(QT_LINK_FLAGS) $(ADDITIONAL_COMPILE_FLAGS) $(ADDITIONAL_LINK_FLAGS) 
