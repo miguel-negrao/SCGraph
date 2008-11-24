@@ -15,7 +15,7 @@ PLUGIN_SOURCES = $(PLUGINS:%=%.cc)
 PLUGIN_HEADERS = $(PLUGINS:%=%.h)
 PLUGIN_MOCS = $(PLUGINS:%=%_moc.cc)
 
-PLUGIN_COMPILE_FLAGS = -I/usr/include/X11
+PLUGIN_COMPILE_FLAGS = -I/usr/include/X11 -I../glew/ -I../oscpack/
 
 ifeq ($(UNAME),Linux)
   PLUGIN_LIBS = $(PLUGIN_SOURCES:%.cc=%.so)

@@ -9,8 +9,8 @@
 #include <stdexcept>
 #include <sstream>
 
-#include <oscpack/osc/OscReceivedElements.h>
-#include <oscpack/osc/OscOutboundPacketStream.h>
+#include <osc/OscReceivedElements.h>
+#include <osc/OscOutboundPacketStream.h>
 
 #include <algorithm>
 

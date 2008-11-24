@@ -33,12 +33,12 @@ QT_COMPILE_FLAGS =  -I$(QTDIR)/include -DQT_THREAD_SUPPORT
 
 HAVE_JACK = 0
 
-CP      = cp
-MV      = mv
-RM      = rm
-INSTALL = install
-DOXYGEN = doxygen
-MOC     = $(QTDIR)/bin/moc
+CP      ?= cp
+MV      ?= mv
+RM      ?= rm
+INSTALL ?= install
+DOXYGEN ?= doxygen
+MOC     ?= $(QTDIR)/bin/moc
 
 TARGET = scgraph
 
@@ -53,7 +53,7 @@ export PREFIX INSTALL CP MV RM QT_COMPILE_FLAGS QT_LINK_FLAGS MOC SC3_HEADERS AD
 all:  $(TARGET) plugins test_tree 
 
 
-COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\" -I /usr/include/X11/
+COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\" -I /usr/include/X11/ -I./glew/ -DGLEW_MX -I./oscpack/
 
 ifeq ($(HAVE_JACK),1)
   COMPILE_FLAGS += `pkg-config jack fftw3f --cflags` -DHAVE_JACK
@@ -76,7 +76,7 @@ ifeq ($(UNAME),Darwin)
   COMPILE_FLAGS += -I/usr/X11R6/include  -I/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OpenGL.framework/Headers -DSC_DARWIN
 endif
 
-LINK_FLAGS = -lpthread $(ADDITIONAL_LINK_FLAGS) -loscpack $(QT_LINK_FLAGS) -lm `pkg-config sndfile GraphicsMagick++ --cflags --libs` 
+LINK_FLAGS = -lpthread $(ADDITIONAL_LINK_FLAGS) $(QT_LINK_FLAGS) -lm `pkg-config sndfile GraphicsMagick++ --cflags --libs` 
 
 ifeq ($(HAVE_JACK),1)
   LINK_FLAGS += `pkg-config jack --libs fftw3f` -DHAVE_JACK
@@ -94,7 +94,11 @@ ifeq ($(UNAME),Darwin)
   LINK_FLAGS += $(SC3_LIBRARY_PATH)/libscsynth.a  -Wl,-bind_at_load -L/usr/X11R6/lib -lstdc++  
 endif
 
-STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool
+STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool 
+
+GLEWSTUFF = glew/glew
+
+OSCPACKSTUFF = oscpack/osc/OscReceivedElement
 
 QTSTUFF   = graphic_loop osc_handler texture_pool 
 
@@ -109,12 +113,14 @@ ifeq ($(HAVE_JACK),1)
 endif
 
 
-OBJECTS   = $(STUFF:%=%.o)
-QTOBJECTS = $(QTSTUFF:%=%_moc.o)
-SOURCES   = $(STUFF:%=%.cc)
-QTSOURCES = $(QTSTUFF:%=%_moc.cc)
-HEADERS   = $(STUFF:%=%.h)
-DEPS      = $(STUFF:%=deps/%.dep)
+OBJECTS        = $(STUFF:%=%.o)
+GLEWOBJECTS    = $(GLEWSTUFF:%=%.o)
+OSCPACKOBJECTS = $(OSCPACKSTUFF:%=%.o)
+QTOBJECTS      = $(QTSTUFF:%=%_moc.o)
+SOURCES        = $(STUFF:%=%.cc)
+QTSOURCES      = $(QTSTUFF:%=%_moc.cc)
+HEADERS        = $(STUFF:%=%.h)
+DEPS           = $(STUFF:%=deps/%.dep)
 
 # only create deps file if really making
 ifneq ($(MAKECMDGOALS),clean)
@@ -135,21 +141,27 @@ test_obj_loader: obj_loader.h test_obj_loader.cc obj_loader.cc graphics.cc matri
 plugins:
 	make -C plugins
 
-$(TARGET): $(OBJECTS) $(QTOBJECTS) Makefile ../Makefile.include
+$(TARGET): $(OBJECTS) $(QTOBJECTS) $(GLEWOBJECTS) $(OSCPACKOBJECTS)
 	@echo --- Building target: $(TARGET)
 	$(CXX) -o $(TARGET) $(OBJECTS) $(QTOBJECTS) $(LINK_FLAGS)
 
-$(QTOBJECTS): %.o: %.cc Makefile ../Makefile.include
+$(QTOBJECTS): %.o: %.cc 
 	@echo --- Building Qt object: $< \=\> $@
 	$(CXX) -c $< $(COMPILE_FLAGS)
 	@echo
+
+$(GLEWOBJECTS): glew/%.o: glew/%.c $(GLEWSOURCES)
+	@echo Building GLEW support
+	$(CC) -c $< -I ./glew/ 
+
+$(OSCPACKOBJECTS): %.o:
 
 $(QTSOURCES): %_moc.cc: %.h
 	@echo --- Building moc file: $< \=\> $@
 	$(MOC) $(MOC_OPTIONS) -o $@ $<
 	@echo
 
-$(OBJECTS): %.o: %.cc %.h deps/%.dep Makefile ../Makefile.include
+$(OBJECTS): %.o: %.cc %.h deps/%.dep 
 	@echo --- Building object: $< \=\> $@
 	$(CXX) -c $< $(COMPILE_FLAGS)
 	@echo

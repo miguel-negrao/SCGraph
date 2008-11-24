@@ -6,8 +6,8 @@
 // - implement wildcard support for d_load
 
 #include <pthread.h>
-#include <oscpack/osc/OscPacketListener.h>
-#include <oscpack/ip/UdpSocket.h>
+#include <osc/OscPacketListener.h>
+#include <ip/UdpSocket.h>
 
 #include <vector>
 
