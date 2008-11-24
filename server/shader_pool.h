@@ -8,7 +8,6 @@
 
 #include <QtCore/QObject>
 
-#ifdef HAVE_SHADERS
 #define GL_GLEXT_PROTOTPES 1
 #include <GL/gl.h>
 
@@ -83,6 +82,5 @@ struct ShaderPool : public QObject
 
 };
 
-#endif // HAVE_SHADERS
 
 #endif

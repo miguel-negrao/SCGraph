@@ -1,14 +1,9 @@
-#ifdef HAVE_SHADERS
 #define GL_GLEXT_PROTOTYPES 1
-#endif
 
 #include "gl_renderer.h"
 
 #include "../texture_pool.h"
 
-#ifdef HAVE_SHADERS
-#include "../shader_pool.h"
-#endif
 
 
 #include <pthread.h>
@@ -19,13 +14,10 @@
 
 #include <GL/gl.h>
 
-#ifdef HAVE_SHADERS
 #include <GL/glext.h>
-#endif
 
 #include <QtOpenGL/QGLFormat>
 
-#ifdef HAVE_SHADERS
 /** 
 	A global variable, but don't blame me, blame the 
 	GLEW authors
@@ -37,7 +29,6 @@ extern "C" {
 		return glewContext;
 	}
 }
-#endif
 
 
 GLRenderWidget::GLRenderWidget (QWidget *parent, GLRenderer *renderer) :
@@ -75,7 +66,6 @@ void GLRenderWidget::initializeGL ()
 	glEnable(GL_BLEND);
 	resizeGL (SCGRAPH_QT_GL_RENDERER_DEFAULT_WIDTH, SCGRAPH_QT_GL_RENDERER_DEFAULT_HEIGHT);
 
-#ifdef HAVE_GLEW
 	//_glew_context = glewGetContext();
 	glewContext = getGlewContext();
 
@@ -99,13 +89,10 @@ void GLRenderWidget::initializeGL ()
 	{
 		std::cout << "[GGLRenderer]: Warning: shader objects extension missing" << std::endl;
 	}
-#endif
 
 	_renderer->change_textures();
 
-#ifdef HAVE_SHADERS
 	_renderer->change_shader_programs();
-#endif
 	//_shader_program = glCreateProgramObjectARB();
 }
 
@@ -139,9 +126,7 @@ void GLRenderWidget::keyReleaseEvent (QKeyEvent *event)
 	_renderer->keyReleaseEvent (event);
 }
 
-#ifdef HAVE_SHADERS
 GLEWContext *GLRenderWidget::getGlewContext() { return &_glew_context; }
-#endif
 
 
 GLMainWindow::GLMainWindow (GLRenderer *renderer) :
@@ -205,9 +190,7 @@ GLRenderer::GLRenderer () :
 	_main_window->show ();
 
 	connect (TexturePool::get_instance (), SIGNAL (textures_changed()), this, SLOT(change_textures()), Qt::QueuedConnection);
-#ifdef HAVE_SHADERS
 	connect (ShaderPool::get_instance (), SIGNAL (shader_programs_changed()), this, SLOT(change_shader_programs()), Qt::QueuedConnection);
-#endif
 
 #if 0
 	change_textures ();
@@ -250,7 +233,6 @@ void GLRenderer::clear_textures ()
 
 
 
-#ifdef HAVE_SHADERS
 void GLRenderer::compile_and_link_shader_program(unsigned int index, ShaderPool::ShaderProgram *s) {
 	std::cout << "[GGLRenderer]: Compiling and linking shader program: " << index << std::endl;
 	_gl_widget->makeCurrent();
@@ -359,7 +341,6 @@ void GLRenderer::change_shader_programs () {
 void GLRenderer::add_shader_program (unsigned int index) {
 	// GLenum my_program = glCreateProgramObjectARB();
 }
-#endif // HAVE_SHADERS
 
 void GLRenderer::change_textures ()
 {
@@ -682,13 +663,8 @@ void GLRenderer::visitLightConst (const Light *l)
 	do_light (*l);
 }
 
-#ifdef HAVE_SHADERS
 void GLRenderer::visitShaderProgramConst (const ShaderProgram *s)
 {
-#if 0
-	char log[100000];
-	GLsizei length;
-#endif
 	if (s->_on)
 	{
 		glUseProgramObjectARB(_shader_programs[s->_index].first);
@@ -699,10 +675,6 @@ void GLRenderer::visitShaderProgramConst (const ShaderProgram *s)
 		glUseProgramObjectARB(0);
 		_current_shader_program = 0;
 	}
-#if 0
-	glGetInfoLogARB(my_program, 100000, &length, (GLcharARB *)log);
-	std::cout << "Shader log:" << std::endl << log << std::endl << "Shader log end." << std::endl;
-#endif
 }
 
 void GLRenderer::visitShaderUniformConst (const ShaderUniform *s)
@@ -713,6 +685,9 @@ void GLRenderer::visitShaderUniformConst (const ShaderUniform *s)
 
 	// TODO: Make more efficient..
 	//std::cout << "values.size(): " << s->_values.size() << " uniform index: " << s->_uniform_index << std::endl;
+	if (_shader_uniforms.find(_current_shader_program) == _shader_uniforms.end())
+		return;
+
 	switch(s->_values.size()) {
 		case 1:
 			glUniform1fARB(
@@ -751,7 +726,6 @@ void GLRenderer::visitShaderUniformConst (const ShaderUniform *s)
 	// lookup attribute
 	//GLint attribute = glGetAttribLocation(_shader_program[s->_index]first, _shader_programs[s->_index].second->_attributes
 }
-#endif
 
 void GLRenderer::visitGeometryConst (const Geometry *g)
 {
@@ -851,9 +825,7 @@ void GLRenderer::visitCullingConst (const Culling *c)
 void GLRenderer::process_g (double delta_t)
 {
 	_delta_t = delta_t;
-#ifdef HAVE_GLEW
 	glewContext = _gl_widget->getGlewContext();
-#endif
 	_gl_widget->updateGL();
 }
 
@@ -866,9 +838,7 @@ void GLRenderer::really_process_g (double delta_t)
 	/* first thing to do */
 	//_gl_widget->makeCurrent ();
 
-#ifdef HAVE_SHADERS
 	glUseProgramObjectARB(0);
-#endif
 
 	//_gl_widget->makeOverlayCurrent ()
 

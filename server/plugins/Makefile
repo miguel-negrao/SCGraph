@@ -15,7 +15,7 @@ PLUGIN_SOURCES = $(PLUGINS:%=%.cc)
 PLUGIN_HEADERS = $(PLUGINS:%=%.h)
 PLUGIN_MOCS = $(PLUGINS:%=%_moc.cc)
 
-PLUGIN_COMPILE_FLAGS = -I/usr/include/X11 -I../glew/ -I../oscpack/
+PLUGIN_COMPILE_FLAGS = -I/usr/include/X11 -I../glew/ -I../oscpack/ -DGLEW_MX
 
 ifeq ($(UNAME),Linux)
   PLUGIN_LIBS = $(PLUGIN_SOURCES:%.cc=%.so)
@@ -30,17 +30,6 @@ endif
 ifeq ($(HAVE_JACK),1)
   ADDITIONAL_COMPILE_FLAGS += `pkg-config jack fftw3f --cflags` -DHAVE_JACK
   PLUGINS += freq_amp
-endif
-
-ifeq ($(HAVE_SHADERS),1)
-  ADDITIONAL_COMPILE_FLAGS += -DHAVE_SHADERS
-  MOC_OPTIONS += -DHAVE_SHADERS
-endif
-
-ifeq ($(HAVE_GLEW),1)
-  ADDITIONAL_COMPILE_FLAGS += -DHAVE_GLEW -DGLEW_MX
-  ADDITIONAL_LINK_FLAGS += -lGLEW
-  MOC_OPTIONS += -DHAVE_GLEW -DGLEW_MX
 endif
 
 PLUGIN_DIRS = 

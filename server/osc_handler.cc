@@ -1,9 +1,7 @@
 #include "osc_handler.h"
 #include "scgraph.h"
 
-#ifdef HAVE_SHADERS
 #include "shader_pool.h"
-#endif
 
 #include <iostream>
 #include <stdexcept>
@@ -326,7 +324,6 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 		}
 		break;
 
-#ifdef HAVE_SHADERS
 		case cmd_clearShaderPrograms:
 		{
 			ShaderPool::get_instance()->clear_shader_programs();
@@ -397,7 +394,6 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 			}
 		}
 		break;
-#endif // HAVE_SHADERS
 
 		case cmd_graphicsRate:
 		{

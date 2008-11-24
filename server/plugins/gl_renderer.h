@@ -1,13 +1,9 @@
 #ifndef SCGRAPH_QT_GL_RENDERER
 #define SCGRAPH_QT_GL_RENDERER
 
-#ifdef HAVE_SHADERS
 #define GL_GLEXT_PROTOTYPES 1
-#endif
 
-#ifdef HAVE_GLEW
-#include <GL/glew.h>
-#endif
+#include "glew.h"
 
 #include "../unit.h"
 #include "../graphics_visitor.h"
@@ -15,9 +11,7 @@
 
 #include <map>
 
-#ifdef HAVE_SHADERS
 #include "../shader_pool.h"
-#endif
 
 #include "../transformation_command_visitor.h"
 
@@ -35,10 +29,7 @@
 #include <QtOpenGL/QGLWidget>
 #include <GL/glu.h>
 
-#ifdef HAVE_SHADERS
 #include <GL/glext.h>
-#endif
-
 
 class GLRenderer;
 
@@ -56,11 +47,9 @@ class GLRenderWidget : public QGLWidget
 
 	GLenum _shader_program;
 
-#ifdef HAVE_GLEW
 	GLEWContext _glew_context;
 	public:
 		GLEWContext *getGlewContext();
-#endif
 
 	public:
 		GLRenderWidget (QWidget *parent, GLRenderer *renderer);
@@ -172,6 +161,7 @@ class GLRenderer : public QObject, public GUnit, public GraphicsVisitor, public 
 
 	shader_programs_map_t _shader_programs;
 
+	// this is 0 in the case that no shader program is active
 	unsigned int _current_shader_program;
 
 	// a place to store the uniform locations per program
@@ -200,10 +190,8 @@ class GLRenderer : public QObject, public GUnit, public GraphicsVisitor, public 
 		virtual void visitBlendingConst (const Blending *b);
 		virtual void visitCullingConst (const Culling *c);
 
-#ifdef HAVE_SHADERS
 		virtual void visitShaderProgramConst (const ShaderProgram *c);
 		virtual void visitShaderUniformConst (const ShaderUniform *c);
-#endif
 
 		virtual void visitTranslationConst (const Translation *t);
 		virtual void visitRotationConst (const Rotation *r);
@@ -224,24 +212,20 @@ class GLRenderer : public QObject, public GUnit, public GraphicsVisitor, public 
 
 		void clear_textures ();
 
-#ifdef HAVE_SHADERS
 		void compile_and_link_shader_program(unsigned int index, ShaderPool::ShaderProgram *s);
 
 		void setup_shader_programs();
 		void clear_shader_program(unsigned int intex);
 		void clear_shader_programs();
-#endif
 		double _delta_t;
 
 	public slots:
 		void add_texture (unsigned int index);
 		void change_textures ();
-#ifdef HAVE_SHADERS
+
 	public slots:
 		void add_shader_program (unsigned int index);
 		void change_shader_programs ();
-#endif
-
 };
 
 #endif
