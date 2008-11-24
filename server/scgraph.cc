@@ -13,7 +13,11 @@ ScGraph *ScGraph::_instance = 0;
 ScGraph::ScGraph (int argc, char *argv[]) 
 {
 #ifdef HAVE_JACK
-	_jack_client = boost::shared_ptr<JackClient> (new JackClient (Options::get_instance()->_jack_ports, "scgraph"));
+	try {
+		_jack_client = boost::shared_ptr<JackClient> (new JackClient (Options::get_instance()->_jack_ports, "scgraph"));
+	} catch (...) {
+		_jack_client = boost::shared_ptr<JackClient>();
+	}
 #endif
 	// _instance = this;
 	Options *options = Options::get_instance ();
