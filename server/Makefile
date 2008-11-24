@@ -21,12 +21,16 @@ SC3_LIBRARY_PATH = $(SC3_PREFIX)/lib
 
 SC3_PLUGIN_PATH = $(SC3_PREFIX)/lib/SuperCollider/plugins
 
+OSCPACK_COMPILE_FLAGS = 
+
 ifeq ($(UNAME),Linux)
   QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL
+  OSCPACK_COMPILE_FLAGS = -DOSC_HOST_LITTLE_ENDIAN
 endif
 
 ifeq ($(UNAME),Darwin)
   QT_LINK_FLAGS = -F$(QTDIR)/lib -framework QtGui -framework QtCore -framework QtOpenGL
+  OSCPACK_COMPILE_FLAGS = -DOSC_HOST_BIG_ENDIAN
 endif
 
 QT_COMPILE_FLAGS =  -I$(QTDIR)/include -DQT_THREAD_SUPPORT
@@ -98,7 +102,8 @@ STUFF     = main cow_ptr transformation_command transformation_command_visitor g
 
 GLEWSTUFF = glew/glew
 
-OSCPACKSTUFF = oscpack/osc/OscReceivedElement
+OSCPACKSOURCES = $(wildcard oscpack/osc/*.cpp) $(wildcard oscpack/ip/*.cpp) $(wildcard oscpack/ip/posix/*.cpp)
+OSCPACKSTUFF = $(OSCPACKSOURCES:%.cpp=%) 
 
 QTSTUFF   = graphic_loop osc_handler texture_pool 
 
@@ -143,18 +148,20 @@ plugins:
 
 $(TARGET): $(OBJECTS) $(QTOBJECTS) $(GLEWOBJECTS) $(OSCPACKOBJECTS)
 	@echo --- Building target: $(TARGET)
-	$(CXX) -o $(TARGET) $(OBJECTS) $(QTOBJECTS) $(LINK_FLAGS)
+	$(CXX) -o $(TARGET) $(OBJECTS) $(QTOBJECTS) $(GLEWOBJECTS) $(OSCPACKOBJECTS) $(LINK_FLAGS)
 
 $(QTOBJECTS): %.o: %.cc 
 	@echo --- Building Qt object: $< \=\> $@
 	$(CXX) -c $< $(COMPILE_FLAGS)
 	@echo
 
-$(GLEWOBJECTS): glew/%.o: glew/%.c $(GLEWSOURCES)
+$(GLEWOBJECTS): %.o: %.c $(GLEWSOURCES)
 	@echo Building GLEW support
-	$(CC) -c $< -I ./glew/ 
+	$(CC) -c $< -o $@ -I ./glew/ 
 
-$(OSCPACKOBJECTS): %.o:
+$(OSCPACKOBJECTS): %.o: %.cpp $(OSCPACKSOURCES)
+	@echo Building OSCPack support
+	$(CXX) -c $< -o $@ -I ./oscpack/ $(OSCPACK_COMPILE_FLAGS)
 
 $(QTSOURCES): %_moc.cc: %.h
 	@echo --- Building moc file: $< \=\> $@
