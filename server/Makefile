@@ -63,14 +63,6 @@ ifeq ($(HAVE_JACK),1)
   COMPILE_FLAGS += `pkg-config jack fftw3f --cflags` -DHAVE_JACK
 endif
 
-ifeq ($(HAVE_SHADERS),1)
-  COMPILE_FLAGS += -DHAVE_SHADERS
-endif
-
-ifeq ($(HAVE_GLEW),1)
-  COMPILE_FLAGS += -DHAVE_GLEW -DGLEW_MX
-endif
-
 
 ifeq ($(UNAME),Linux)
   COMPILE_FLAGS += -pthread 
@@ -107,11 +99,8 @@ OSCPACKSTUFF = $(OSCPACKSOURCES:%.cpp=%)
 
 QTSTUFF   = graphic_loop osc_handler texture_pool 
 
-ifeq ($(HAVE_SHADERS),1)
-  STUFF += shader_pool
-  QTSTUFF += shader_pool
-  MOC_OPTIONS = -DHAVE_SHADERS
-endif
+STUFF += shader_pool
+QTSTUFF += shader_pool
 
 ifeq ($(HAVE_JACK),1)
   STUFF += jack_client
