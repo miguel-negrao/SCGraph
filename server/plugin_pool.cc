@@ -133,7 +133,7 @@ PluginPool::PluginPool ()
 	_sc_interface_table->fGroup_DeleteAll              = fGroup_DeleteAll;
 	_sc_interface_table->fDoneAction                   = fDoneAction;
 
-	_sc_interface_table->mSineWavetable                = new float[2*128];
+	_sc_interface_table->mSineWavetable                = new float[2*128+1];
 	_sc_interface_table->mSine                         = new float[128+1];
 	_sc_interface_table->mCosecant                     = new float[128+1];
 	_sc_interface_table->mSineSize                     = 128;
@@ -412,6 +412,8 @@ void PluginPool::add_sc_unit (boost::shared_ptr<ScUnit> unit)
 
 
 void PluginPool::destroy_sc_unit(Unit *u) {
+	if (!u) return;
+
 	for (unsigned int i = 0; i < u->mNumInputs; ++i) {
 		delete [] u->mInBuf[i];
 		delete u->mInput[i];
