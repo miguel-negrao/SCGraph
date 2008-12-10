@@ -27,9 +27,6 @@
 
 
 #include <QtOpenGL/QGLWidget>
-#include <GL/glu.h>
-
-#include <GL/glext.h>
 
 class GLRenderer;
 

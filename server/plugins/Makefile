@@ -15,7 +15,7 @@ PLUGIN_SOURCES = $(PLUGINS:%=%.cc)
 PLUGIN_HEADERS = $(PLUGINS:%=%.h)
 PLUGIN_MOCS = $(PLUGINS:%=%_moc.cc)
 
-PLUGIN_COMPILE_FLAGS = -I/usr/include/X11 -I../glew/ -I../oscpack/ -DGLEW_MX
+PLUGIN_COMPILE_FLAGS =  -I../glew/ -I../oscpack/ -DGLEW_MX
 
 ifeq ($(UNAME),Linux)
   PLUGIN_LIBS = $(PLUGIN_SOURCES:%.cc=%.so)
@@ -25,7 +25,9 @@ endif
 ifeq ($(UNAME),Darwin)
   PLUGIN_LIBS = $(PLUGIN_SOURCES:%.cc=%.bundle)
   LINK_FLAGS = -bundle -fPIC -undefined dynamic_lookup 
+#  PLUGIN_COMPILE_FLAGS += 
 endif
+
 
 ifeq ($(HAVE_JACK),1)
   ADDITIONAL_COMPILE_FLAGS += `pkg-config jack fftw3f --cflags` -DHAVE_JACK

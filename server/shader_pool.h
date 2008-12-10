@@ -8,8 +8,7 @@
 
 #include <QtCore/QObject>
 
-#define GL_GLEXT_PROTOTPES 1
-#include <GL/gl.h>
+#include "glew.h"
 
 struct ShaderPool : public QObject
 {

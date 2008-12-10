@@ -1,4 +1,4 @@
-# Copyright 2006 Florian Paul Schmidt
+# COPYRIGHT 2006 Florian Paul Schmidt
  
 UNAME = $(shell uname)
 
@@ -25,12 +25,12 @@ OSCPACK_COMPILE_FLAGS =
 
 ifeq ($(UNAME),Linux)
   QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL
-  OSCPACK_COMPILE_FLAGS = -DOSC_HOST_LITTLE_ENDIAN
+  OSCPACK_COMPILE_FLAGS += -DOSC_HOST_LITTLE_ENDIAN
 endif
 
 ifeq ($(UNAME),Darwin)
-  QT_LINK_FLAGS = -F$(QTDIR)/lib -framework QtGui -framework QtCore -framework QtOpenGL
-  OSCPACK_COMPILE_FLAGS = -DOSC_HOST_BIG_ENDIAN
+  QT_LINK_FLAGS = -F$(QTDIR)/lib -weak_framework QtGui -weak_framework QtCore -weak_framework QtOpenGL -weak_framework OpenGL
+  OSCPACK_COMPILE_FLAGS += -DOSC_HOST_LITTLE_ENDIAN
 endif
 
 QT_COMPILE_FLAGS =  -I$(QTDIR)/include -DQT_THREAD_SUPPORT
@@ -57,7 +57,7 @@ export PREFIX INSTALL CP MV RM QT_COMPILE_FLAGS QT_LINK_FLAGS MOC SC3_HEADERS AD
 all:  $(TARGET) plugins test_tree 
 
 
-COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\" -I /usr/include/X11/ -I./glew/ -DGLEW_MX -I./oscpack/
+COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\"  -I./glew/ -DGLEW_MX -I./oscpack/
 
 ifeq ($(HAVE_JACK),1)
   COMPILE_FLAGS += `pkg-config jack fftw3f --cflags` -DHAVE_JACK
@@ -69,7 +69,7 @@ ifeq ($(UNAME),Linux)
 endif
 
 ifeq ($(UNAME),Darwin)
-  COMPILE_FLAGS += -I/usr/X11R6/include  -I/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/OpenGL.framework/Headers -DSC_DARWIN
+  COMPILE_FLAGS += -DSC_DARWIN
 endif
 
 LINK_FLAGS = -lpthread $(ADDITIONAL_LINK_FLAGS) $(QT_LINK_FLAGS) -lm `pkg-config sndfile GraphicsMagick++ --cflags --libs` 
@@ -78,9 +78,6 @@ ifeq ($(HAVE_JACK),1)
   LINK_FLAGS += `pkg-config jack --libs fftw3f` -DHAVE_JACK
 endif
 
-ifeq ($(HAVE_GLEW),1)
-  LINK_FLAGS += `pkg-config jack --libs fftw3f` -DHAVE_JACK -DHAVE_GLEW -lGLEW
-endif
 
 ifeq ($(UNAME),Linux)
   LINK_FLAGS += -lrt -lm -Wl,--export-dynamic -L$(SC3_LIBRARY_PATH) -lscsynth -lGLU -rdynamic -ldl
@@ -146,11 +143,11 @@ $(QTOBJECTS): %.o: %.cc
 
 $(GLEWOBJECTS): %.o: %.c $(GLEWSOURCES)
 	@echo Building GLEW support
-	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX
+	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX $(ADDITIONAL_COMPILE_FLAGS)
 
 $(OSCPACKOBJECTS): %.o: %.cpp $(OSCPACKSOURCES)
 	@echo Building OSCPack support
-	$(CXX) -c $< -o $@ -I ./oscpack/ $(OSCPACK_COMPILE_FLAGS)
+	$(CXX) -c $< -o $@ -I ./oscpack/ $(ADDITIONAL_COMPILE_FLAGS) $(OSCPACK_COMPILE_FLAGS)
 
 $(QTSOURCES): %_moc.cc: %.h
 	@echo --- Building moc file: $< \=\> $@
@@ -162,7 +159,7 @@ $(OBJECTS): %.o: %.cc %.h deps/%.dep
 	$(CXX) -c $< $(COMPILE_FLAGS)
 	@echo
 
-$(DEPS): deps/%.dep: %.cc %.h ../Makefile.include
+$(DEPS): deps/%.dep: %.cc %.h 
 	@echo --- Building dependency: $< \=\> $@
 	$(CXX) -M -o $@ $< $(COMPILE_FLAGS)
 	@echo
@@ -173,7 +170,7 @@ doc:
 	$(DOXYGEN)
 
 clean:
-	$(RM) -f $(TARGET) *.o deps/*.dep *_moc.cc test_obj_loader test_tree
+	$(RM) -f $(TARGET) $(OBJECTS) $(QTOBJECTS) $(GLEWOBJECTS) $(OSCPACKOBJECTS)  deps/*.dep *_moc.cc test_obj_loader test_tree
 	$(RM) -rf doc/html/
 	$(RM) -rf doc/latex/
 	$(RM) -f test_tree

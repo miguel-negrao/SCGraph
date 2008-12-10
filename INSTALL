@@ -10,9 +10,7 @@
 
  Most of these should be available in all major linx distros. On Mac OS X you will have to do some tracking down and installing.
 
-NOTE: If you want to use vertex and fragment shaders you must enable both HAVE_SHADERS and HAVE_GLEW in your Makefile.include. Note also, that GLEW must be built with the GLEW_MX preprocessor macro defined as scgraph does use multiple contexts. At the time of this writing the ubuntu packages of GLEW were not built with multi context support.
-
- if you want the JackClient (which can do fft analysis of audio input over a jack port), then you need:
+ If you want the JackClient (which can do fft analysis of audio input over a jack port), then you need:
 
  - JACK             (http://jackaudio.org)
  - FFTW3            (http://www.fftw.org/)
