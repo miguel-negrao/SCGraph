@@ -84,7 +84,7 @@ ifeq ($(UNAME),Linux)
 endif
 
 ifeq ($(UNAME),Darwin)
-  LINK_FLAGS += $(SC3_LIBRARY_PATH)/libscsynth.a  -Wl,-bind_at_load -L/usr/X11R6/lib -lstdc++  
+  LINK_FLAGS += $(SC3_LIBRARY_PATH)/libscsynth.a  -Wl,-bind_at_load -lstdc++  
 endif
 
 STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool 
