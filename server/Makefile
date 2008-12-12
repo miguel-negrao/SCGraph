@@ -24,7 +24,7 @@ SC3_PLUGIN_PATH = $(SC3_PREFIX)/lib/SuperCollider/plugins
 OSCPACK_COMPILE_FLAGS = 
 
 ifeq ($(UNAME),Linux)
-  QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL
+  QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL -lQtUiTool
   OSCPACK_COMPILE_FLAGS += -DOSC_HOST_LITTLE_ENDIAN
 endif
 
@@ -87,7 +87,7 @@ ifeq ($(UNAME),Darwin)
   LINK_FLAGS += $(SC3_LIBRARY_PATH)/libscsynth.a  -Wl,-bind_at_load -lstdc++  
 endif
 
-STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool 
+STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool ui_pool
 
 GLEWSTUFF = glew/glew
 
@@ -143,7 +143,7 @@ $(QTOBJECTS): %.o: %.cc
 
 $(GLEWOBJECTS): %.o: %.c $(GLEWSOURCES)
 	@echo Building GLEW support
-	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX $(ADDITIONAL_COMPILE_FLAGS)
+	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX -O2
 
 $(OSCPACKOBJECTS): %.o: %.cpp $(OSCPACKSOURCES)
 	@echo Building OSCPack support
