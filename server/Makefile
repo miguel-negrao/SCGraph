@@ -122,9 +122,6 @@ endif
 endif
 endif
 
-scgraph_control: main_window.h main_window.cc
-	$(MOC) main_window.h -o main_window.moc.cc $(MOC_OPTIONS)
-	g++ -o scgraph_control main_window.moc.cc main_window.cc $(QT_COMPILE_FLAGS) $(LINK_FLAGS)
 
 test_tree: tree.h test_tree.cc
 	 g++ test_tree.cc tree.cc -Wall -pedantic -o test_tree -g $(ADDITIONAL_COMPILE_FLAGS)
