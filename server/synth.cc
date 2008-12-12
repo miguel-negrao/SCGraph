@@ -30,7 +30,10 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 		if (name == "Control")
 		{
 			for (size_t j = 0; j < _parameters.size (); ++j)
+			{
 				unit->_control_ins.push_back (&_parameters[control++]);
+				if ((control-1) >=  _parameters.size()) std::cout << "THIS SHOULD NOT HAPPEN" << std::endl;
+			}
 
 			/* an empty graphics bus reference, since there's no constants nor
 		       controls at graphics rate */
@@ -44,6 +47,9 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 			{
 				/* yes it is */
 				unit->_control_ins.push_back (&_constants[_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant]);
+
+				if (_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant >= (int)_constants.size())
+					std::cout << "THIS SHOULD NOT HAPPEN EITHER!!" << std::endl;
 
 				unit->_graphics_ins.push_back (0);
 			}

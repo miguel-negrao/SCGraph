@@ -27,6 +27,7 @@ doc:
 
 install:
 	make -C server install
+	make -C doc install
 
 uninstall:
 	make -C server uninstall
