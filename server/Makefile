@@ -24,7 +24,7 @@ SC3_PLUGIN_PATH = $(SC3_PREFIX)/lib/SuperCollider/plugins
 OSCPACK_COMPILE_FLAGS = 
 
 ifeq ($(UNAME),Linux)
-  QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL -lQtUiTool
+  QT_LINK_FLAGS = -L$(QTDIR)/lib -lQtGui -lQtCore -lQtOpenGL -lQtUiTools
   OSCPACK_COMPILE_FLAGS += -DOSC_HOST_LITTLE_ENDIAN
 endif
 

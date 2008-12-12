@@ -7,7 +7,15 @@
 
 
 class UIPool {
-	std::vector<QUiLoader> _ui_loaders;
+	public:
+		static UIPool* get_instance();
+
+	protected:
+		UIPool();
+		std::vector<QUiLoader> _ui_loaders;
+
+		static UIPool *_instance;
+
 };
 
 
