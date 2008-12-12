@@ -54,7 +54,7 @@ export PREFIX INSTALL CP MV RM QT_COMPILE_FLAGS QT_LINK_FLAGS MOC SC3_HEADERS AD
 
 
 .PHONY: all
-all:  $(TARGET) plugins test_tree 
+all:  $(TARGET) plugins test_tree scgraph_control
 
 
 COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\"  -I./glew/ -DGLEW_MX -I./oscpack/
@@ -87,14 +87,14 @@ ifeq ($(UNAME),Darwin)
   LINK_FLAGS += $(SC3_LIBRARY_PATH)/libscsynth.a  -Wl,-bind_at_load -lstdc++  
 endif
 
-STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool ui_pool
+STUFF     = main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool ui_pool 
 
 GLEWSTUFF = glew/glew
 
 OSCPACKSOURCES = $(wildcard oscpack/osc/*.cpp) $(wildcard oscpack/ip/*.cpp) $(wildcard oscpack/ip/posix/*.cpp)
 OSCPACKSTUFF = $(OSCPACKSOURCES:%.cpp=%) 
 
-QTSTUFF   = graphic_loop osc_handler texture_pool 
+QTSTUFF   = graphic_loop osc_handler texture_pool
 
 STUFF += shader_pool
 QTSTUFF += shader_pool
@@ -121,6 +121,10 @@ ifneq ($(MAKECMDGOALS),doc)
 endif
 endif
 endif
+
+scgraph_control: main_window.h main_window.cc
+	$(MOC) main_window.h -o main_window.moc.cc $(MOC_OPTIONS)
+	g++ -o scgraph_control main_window.moc.cc main_window.cc $(QT_COMPILE_FLAGS) $(LINK_FLAGS)
 
 test_tree: tree.h test_tree.cc
 	 g++ test_tree.cc tree.cc -Wall -pedantic -o test_tree -g $(ADDITIONAL_COMPILE_FLAGS)
