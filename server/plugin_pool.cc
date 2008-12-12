@@ -495,7 +495,7 @@ Unit *PluginPool::create_sc_unit (const std::string &name, int special_index, in
 			unit->mWorld = _sc_world;
 			unit->mParent = _sc_graph;
 
-			// _sc_units[i]->_ctor(unit);
+			//_sc_units[i]->_ctor(unit);
 			break;
 		}
 	}

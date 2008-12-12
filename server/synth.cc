@@ -25,6 +25,8 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 
 		boost::shared_ptr<GUnit> unit = PluginPool->create_unit (name, _synthdef->_ugen_specs[i]._special_index, this);
 
+//		if (unit.get() == 0) std::cout << "AAAAARGH" << std::endl;
+
 		if (name == "Control")
 		{
 			for (size_t j = 0; j < _parameters.size (); ++j)
@@ -64,6 +66,12 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 		}
 
 		_units.push_back(unit);
+	}
+	for (size_t i = 0; i < _synthdef->_ugen_specs.size (); ++i)
+	{
+		if (synthdef->_ugen_specs[i]._calculation_rate == 0) {
+			_units[i]->process_c(0);
+		}
 	}
 }
 
