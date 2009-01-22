@@ -935,6 +935,10 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 			{
 				std::cout << "[OscHandler]: Error while parsing message: /n_setn: " << e.what () << ". TypeTags: " << message->TypeTags() << std::endl;
 			}
+			catch(std::runtime_error &e)
+			{
+				std::cout << "[OscHandler]: Runtime Error. Reason: " << e.what() << std::endl;
+			}
 
 		}
 		break;
