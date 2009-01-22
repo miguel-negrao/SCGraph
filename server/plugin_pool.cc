@@ -480,7 +480,7 @@ Unit *PluginPool::create_sc_unit (const std::string &name, int special_index, in
 
 
 			unit->mOutBuf = new float*[num_outputs];
-			unit->mOutput = new struct Wire*[num_inputs];
+			unit->mOutput = new struct Wire*[num_outputs];
 
 			for (int j = 0; j < num_outputs; ++j)
 			{
