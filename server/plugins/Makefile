@@ -15,7 +15,7 @@ PLUGIN_SOURCES = $(PLUGINS:%=%.cc)
 PLUGIN_HEADERS = $(PLUGINS:%=%.h)
 PLUGIN_MOCS = $(PLUGINS:%=%_moc.cc)
 
-PLUGIN_COMPILE_FLAGS =  -I../glew/ -I../oscpack/ -DGLEW_MX
+PLUGIN_COMPILE_FLAGS =  -I../glew/ -I../oscpack/ -DGLEW_MX $(ARCH_FLAGS)
 
 ifeq ($(UNAME),Linux)
   PLUGIN_LIBS = $(PLUGIN_SOURCES:%.cc=%.so)
@@ -53,7 +53,7 @@ ifeq ($(UNAME),Darwin)
 $(PLUGIN_LIBS): %.bundle: %.cc %.cc %_moc.cc ../unit.h ../graphics_visitor.h ../graphics.h ../graphics_bus.h ../matrix.h 
 	@echo
 	@echo --- Building plugin: $< \=\> $@
-	$(CXX) $(PLUGIN_COMPILE_FLAGS) $(LINK_FLAGS) -o $@ $*.cc $*_moc.cc $(QT_COMPILE_FLAGS) $(QT_LINK_FLAGS) $(ADDITIONAL_COMPILE_FLAGS) $(ADDITIONAL_LINK_FLAGS) 
+	$(CXX) $(PLUGIN_COMPILE_FLAGS) $(LINK_FLAGS) -o $@ $*.cc $*_moc.cc $(QT_COMPILE_FLAGS) $(QT_LINK_FLAGS) $(ADDITIONAL_COMPILE_FLAGS) $(ADDITIONAL_LINK_FLAGS)  $(ARCH_FLAGS)
 endif
 
 
