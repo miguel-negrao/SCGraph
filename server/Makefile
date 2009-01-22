@@ -54,7 +54,7 @@ export PREFIX INSTALL CP MV RM QT_COMPILE_FLAGS QT_LINK_FLAGS MOC SC3_HEADERS AD
 
 
 .PHONY: all
-all:  $(TARGET) plugins test_tree scgraph_control
+all:  $(TARGET) plugins test_tree
 
 
 COMPILE_FLAGS = -pedantic -Wall -Wno-long-long -ansi -Werror $(ADDITIONAL_COMPILE_FLAGS) -DPREFIX=\"$(PREFIX)\" -DSC3_INCLUDE_PATH=\"$(SC3_INCLUDE_PATH)\" $(QT_COMPILE_FLAGS) -I$(SC3_INCLUDE_PATH)/plugin_interface  -I$(SC3_INCLUDE_PATH)/server -I$(SC3_INCLUDE_PATH)/common `pkg-config sndfile GraphicsMagick++ --cflags`  -DSC3_PLUGIN_PATH=\"$(SC3_PLUGIN_PATH)\"  -I./glew/ -DGLEW_MX -I./oscpack/
@@ -69,15 +69,16 @@ ifeq ($(UNAME),Linux)
 endif
 
 ifeq ($(UNAME),Darwin)
-  COMPILE_FLAGS += -DSC_DARWIN
+#  COMPILE_FLAGS +=  -I/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/OpenGL.framework/Headers -DSC_DARWIN
+  COMPILE_FLAGS +=  -DSC_DARWIN
 endif
 
 LINK_FLAGS = -lpthread $(ADDITIONAL_LINK_FLAGS) $(QT_LINK_FLAGS) -lm `pkg-config sndfile GraphicsMagick++ --cflags --libs` 
+#LINK_FLAGS = -lpthread $(ADDITIONAL_LINK_FLAGS) $(QT_LINK_FLAGS) -lm `pkg-config sndfile --cflags --static` /Users/fschmidt/local/opt/GraphicsMagick-1.3.1/lib/libGraphicsMagick++.a  /Users/fschmidt/local/opt/GraphicsMagick-1.3.1/lib/libGraphicsMagick.a 
 
 ifeq ($(HAVE_JACK),1)
   LINK_FLAGS += `pkg-config jack --libs fftw3f` -DHAVE_JACK
 endif
-
 
 ifeq ($(UNAME),Linux)
   LINK_FLAGS += -lrt -lm -Wl,--export-dynamic -L$(SC3_LIBRARY_PATH) -lscsynth -lGLU -rdynamic -ldl
@@ -144,7 +145,7 @@ $(QTOBJECTS): %.o: %.cc
 
 $(GLEWOBJECTS): %.o: %.c $(GLEWSOURCES)
 	@echo Building GLEW support
-	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX -O2
+	$(CC) -c $< -o $@ -I ./glew/  -DGLEW_MX $(ADDITIONAL_COMPILE_FLAGS)
 
 $(OSCPACKOBJECTS): %.o: %.cpp $(OSCPACKSOURCES)
 	@echo Building OSCPack support

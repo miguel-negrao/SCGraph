@@ -40,6 +40,7 @@ class GSynth : public GNode
 
 		void c_set (int control_index, float value);
 		void c_set (const char *control_name, float value);
+		int get_index(const char *control_name);
 };
 
 

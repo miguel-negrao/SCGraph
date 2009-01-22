@@ -6,12 +6,12 @@
 class Control : public GUnit
 {
 	public:
-		Control (float value = 0);
+		Control (int special_index);
 
 		void process_g (double delta_t);
 		void process_c (double delta_t);
 
-		float _value;
+		int _special_index;
 };
 
 #endif

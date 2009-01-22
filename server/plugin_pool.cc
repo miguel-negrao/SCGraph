@@ -349,7 +349,7 @@ boost::shared_ptr<GUnit> PluginPool::create_unit (const std::string &name, int s
 
 	if (name == "Control")
 	{
-		boost::shared_ptr<GUnit> unit (new Control ());
+		boost::shared_ptr<GUnit> unit (new Control (special_index));
 
 		return unit;	
 	}

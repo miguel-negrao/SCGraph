@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <boost/scoped_ptr.hpp>
+#include <stdexcept>
 
 #if 0
 NodeTree::NodeTree () :
@@ -485,6 +486,16 @@ void NodeTree::n_set (int id, int index, float value)
 
 }
 
+
+int NodeTree::get_index(int id, const std::string &param_name) {
+	Tree::Node<NodePtr> *node = find_synth_by_id (id);
+	GSynth* synth;
+	if ((synth = dynamic_cast<GSynth*> (node->_payload.get())))
+	{
+		return synth->get_index(param_name.c_str());
+	}
+	else throw std::runtime_error("parameter name not known... please report this as a bug");
+}
 
 
 

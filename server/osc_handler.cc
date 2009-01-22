@@ -893,40 +893,42 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 
 		case cmd_n_setn:
 		{
-#if 0
 			osc::ReceivedMessage::const_iterator arg = message->ArgumentsBegin();
+
+			int node_id;
 
 			try
 			{
+				node_id = (*(arg++)).AsInt32 ();
+
+				int control_index;
+				//TODO: Notify sc-dev about wrong types
+				//std::cout << (*arg).TypeTag () << std::endl;
+				if ((*arg).TypeTag () == 's')
+				{
+					std::string control_name = (char*)(*(arg++)).AsString ();
+					control_index = scgraph->_node_tree.get_index(node_id, control_name);
+				} 
+				else
+				{
+					control_index = (int)(*(arg++)).AsInt32 ();
+				}
+
+				// read number of values from stream	
+				(*(arg++)).AsInt32 ();
+				//std::cout << control_name << std::endl;
+	
+				//std::cout << (*arg).TypeTag () << std::endl;
 				while (arg != message->ArgumentsEnd ())
 				{
-					//TODO: Notify sc-dev about wrong types
-					std::cout << (*arg).TypeTag () << std::endl;
-					if ((*arg).TypeTag () == 's')
-					{
-						control_name = (char*)(*(arg++)).AsString ();
+					float control_value;
 	
-						std::cout << control_name << std::endl;
-	
-						std::cout << (*arg).TypeTag () << std::endl;
-	
-						if ((*arg).TypeTag () == 'f')
-							control_value = (*(arg++)).AsFloat ();
-						else
-							control_value = (*(arg++)).AsInt32 ();
-						synth->c_set (control_name, control_value);
-					}
+					if ((*arg).TypeTag () == 'f')
+						control_value = (*(arg++)).AsFloat ();
 					else
-					{
-						control_index = (*(arg++)).AsInt32 ();
-	
-						std::cout << control_index << std::endl;
-	
-						if ((*arg).TypeTag () == 'f')
-							control_value = (*(arg++)).AsFloat ();
-						else
-							control_value = (*(arg++)).AsInt32 ();
-					}
+						control_value = (*(arg++)).AsInt32 ();
+				// synth->c_set (control_name, control_value);
+					scgraph->_node_tree.n_set (node_id, control_index++, control_value);
 				}
 			}
 			catch (osc::Exception &e)
@@ -934,10 +936,8 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 				std::cout << "[OscHandler]: Error while parsing message: /n_setn: " << e.what () << ". TypeTags: " << message->TypeTags() << std::endl;
 			}
 
-			}
-#endif
-			break;
 		}
+		break;
 
 		case cmd_n_free:
 		{

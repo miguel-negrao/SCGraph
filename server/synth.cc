@@ -5,6 +5,7 @@
 
 
 #include <iostream>
+#include <stdexcept>
 
 GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 	GNode (id),
@@ -15,7 +16,7 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 	_constants = _synthdef->_constants;
 	_parameters = _synthdef->_parameters;
 
-	size_t control = 0;
+	//size_t control = 0;
 
 	for (size_t i = 0; i < _synthdef->_ugen_specs.size (); ++i)
 	{
@@ -29,12 +30,15 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 
 		if (name == "Control")
 		{
+			unit->_control_ins.push_back (&_parameters[0]);
+#if 0			
 			for (size_t j = 0; j < _parameters.size (); ++j)
 			{
-				unit->_control_ins.push_back (&_parameters[control++]);
-				if ((control-1) >=  _parameters.size()) std::cout << "THIS SHOULD NOT HAPPEN" << std::endl;
+				unit->_control_ins.push_back (&_parameters[_synthdef->_ugen_specs[i]._special_index]);
+				//unit->_control_ins.push_back (&_parameters[control++]);
+				//if ((control-1) >=  _parameters.size()) std::cout << "THIS SHOULD NOT HAPPEN" << std::endl;
 			}
-
+#endif
 			/* an empty graphics bus reference, since there's no constants nor
 		       controls at graphics rate */
 			unit->_graphics_ins.push_back (0);
@@ -48,8 +52,10 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 				/* yes it is */
 				unit->_control_ins.push_back (&_constants[_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant]);
 
+#if 0
 				if (_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant >= (int)_constants.size())
 					std::cout << "THIS SHOULD NOT HAPPEN EITHER!!" << std::endl;
+#endif
 
 				unit->_graphics_ins.push_back (0);
 			}
@@ -172,4 +178,16 @@ void GSynth::set_done_action (int done_action)
 {
 	_done_action = done_action;
 }
+
+int GSynth::get_index(const char *param_name) {
+	for (size_t i = 0; i < _synthdef->_param_names.size(); ++i)
+	{
+		if (std::string(_synthdef->_param_names[i]._name) == std::string (param_name))
+		{
+			return i;
+		}
+	}
+	throw(std::runtime_error("unknown parameter name, please file a bug report"));
+}
+
 

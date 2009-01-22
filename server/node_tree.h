@@ -74,6 +74,8 @@ class NodeTree
 
 		void n_set (int id, const std::string &param_name, float value);
 
+		int get_index(int id, const std::string &param_name);
+
 		void n_set (int id, int index, float value);
 
 		/** plugins call this to execute their doneAction */
