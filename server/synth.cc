@@ -31,14 +31,7 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 		if (name == "Control")
 		{
 			unit->_control_ins.push_back (&_parameters[0]);
-#if 0			
-			for (size_t j = 0; j < _parameters.size (); ++j)
-			{
-				unit->_control_ins.push_back (&_parameters[_synthdef->_ugen_specs[i]._special_index]);
-				//unit->_control_ins.push_back (&_parameters[control++]);
-				//if ((control-1) >=  _parameters.size()) std::cout << "THIS SHOULD NOT HAPPEN" << std::endl;
-			}
-#endif
+
 			/* an empty graphics bus reference, since there's no constants nor
 		       controls at graphics rate */
 			unit->_graphics_ins.push_back (0);
@@ -51,11 +44,6 @@ GSynth::GSynth (boost::shared_ptr<GSynthDef> synthdef, int id) :
 			{
 				/* yes it is */
 				unit->_control_ins.push_back (&_constants[_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant]);
-
-#if 0
-				if (_synthdef->_ugen_specs[i]._input_specs[j]._index_of_constant >= (int)_constants.size())
-					std::cout << "THIS SHOULD NOT HAPPEN EITHER!!" << std::endl;
-#endif
 
 				unit->_graphics_ins.push_back (0);
 			}
@@ -184,7 +172,7 @@ int GSynth::get_index(const char *param_name) {
 	{
 		if (std::string(_synthdef->_param_names[i]._name) == std::string (param_name))
 		{
-			return i;
+			return _synthdef->_param_names[i]._index;
 		}
 	}
 	throw(std::runtime_error("unknown parameter name, please file a bug report"));
