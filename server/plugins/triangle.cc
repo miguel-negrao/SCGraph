@@ -60,10 +60,6 @@ void Triangle::process_g (double delta_t)
 		_g.touch()->_faces[0].touch()->_vertices[0]._c[i] = *_control_ins[i];
 		_g.touch()->_faces[0].touch()->_vertices[1]._c[i] = *_control_ins[i+3];
 		_g.touch()->_faces[0].touch()->_vertices[2]._c[i] = *_control_ins[i+6];
-
-		_g.touch()->_faces[0].touch()->_vertices[0]._c[i] = *_control_ins[i+9];
-		_g.touch()->_faces[0].touch()->_vertices[1]._c[i] = *_control_ins[i+9];
-		_g.touch()->_faces[0].touch()->_vertices[2]._c[i] = *_control_ins[i+9];
 	}
 
 	_graphics_outs[0]._graphics.push_back (_g);
