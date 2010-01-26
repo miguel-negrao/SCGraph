@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <cstdio>
 #include <sstream>
 
 
@@ -72,6 +73,7 @@ void GLRenderWidget::initializeGL ()
 		/* Problem: glewInit failed, something is seriously wrong. */
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 	}
+#ifdef HAVE_SHADERS
 	if (!GLEW_ARB_vertex_program)
 	{
 		std::cout << "[GGLRenderer]: Warning: vertex program extension missing" << std::endl;
@@ -86,10 +88,12 @@ void GLRenderWidget::initializeGL ()
 	{
 		std::cout << "[GGLRenderer]: Warning: shader objects extension missing" << std::endl;
 	}
-
+#endif
 	_renderer->change_textures();
 
+#ifdef HAVE_SHADERS
 	_renderer->change_shader_programs();
+#endif
 	//_shader_program = glCreateProgramObjectARB();
 }
 
@@ -231,6 +235,7 @@ void GLRenderer::clear_textures ()
 
 
 void GLRenderer::compile_and_link_shader_program(unsigned int index, ShaderPool::ShaderProgram *s) {
+#ifdef HAVE_SHADERS
 	std::cout << "[GGLRenderer]: Compiling and linking shader program: " << index << std::endl;
 	_gl_widget->makeCurrent();
 
@@ -300,26 +305,31 @@ void GLRenderer::compile_and_link_shader_program(unsigned int index, ShaderPool:
 	std::cout << "[GGLRenderer]: Shader log:" << std::endl << log << std::endl << "[GGLRenderer]: Shader log end." << std::endl;
 
 	glUseProgramObjectARB(0);
+#endif
 }
 
 void GLRenderer::clear_shader_program(unsigned int index) {
+#ifdef HAVE_SHADERS
 	for (size_t j = 0; j < _shader_programs[index].second.size(); ++j)
 		glDeleteObjectARB(_shader_programs[index].second[j]);
 
 	glDeleteObjectARB(_shader_programs[index].first);
-
+#endif
 }
 
 void GLRenderer::setup_shader_programs() {
+#ifdef HAVE_SHADERS
 	ShaderPool *p = ShaderPool::get_instance();
 
 	for (ShaderPool::shader_programs_map_t::iterator it = p->_shader_programs.begin(); it != p->_shader_programs.end(); ++it)
 	{
 		compile_and_link_shader_program(it->first, it->second.get());
 	}
+#endif
 }
 
 void GLRenderer::clear_shader_programs() {
+#ifdef HAVE_SHADERS
 	_gl_widget->makeCurrent();
 
 	for (shader_programs_map_t::iterator it = _shader_programs.begin(); it != _shader_programs.end(); ++it)
@@ -328,11 +338,14 @@ void GLRenderer::clear_shader_programs() {
 	}
 
 	_shader_programs.clear();
+#endif
 }
 
 void GLRenderer::change_shader_programs () {
+#ifdef HAVE_SHADERS
 	clear_shader_programs();
 	setup_shader_programs();
+#endif
 }
 
 void GLRenderer::add_shader_program (unsigned int index) {
@@ -662,6 +675,7 @@ void GLRenderer::visitLightConst (const Light *l)
 
 void GLRenderer::visitShaderProgramConst (const ShaderProgram *s)
 {
+#ifdef HAVE_SHADERS
 	if (s->_on)
 	{
 		glUseProgramObjectARB(_shader_programs[s->_index].first);
@@ -672,10 +686,12 @@ void GLRenderer::visitShaderProgramConst (const ShaderProgram *s)
 		glUseProgramObjectARB(0);
 		_current_shader_program = 0;
 	}
+#endif
 }
 
 void GLRenderer::visitShaderUniformConst (const ShaderUniform *s)
 {
+#ifdef HAVE_SHADERS
 	_gl_widget->makeCurrent();
 
 	//std::cout << "current shader program index: " << _current_shader_program << " uniform index: " << s->_uniform_index << std::endl;
@@ -722,6 +738,7 @@ void GLRenderer::visitShaderUniformConst (const ShaderUniform *s)
 	}
 	// lookup attribute
 	//GLint attribute = glGetAttribLocation(_shader_program[s->_index]first, _shader_programs[s->_index].second->_attributes
+#endif
 }
 
 void GLRenderer::visitGeometryConst (const Geometry *g)

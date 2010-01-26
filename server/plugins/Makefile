@@ -34,6 +34,11 @@ ifeq ($(HAVE_JACK),1)
   PLUGINS += freq_amp
 endif
 
+ifeq ($(HAVE_SHADERS),1)
+  ADDITIONAL_COMPILE_FLAGS += -DHAVE_SHADERS
+endif
+
+
 PLUGIN_DIRS = 
 
 TARGET_DIR = $(PREFIX)/lib/scgraph/plugins

@@ -915,11 +915,11 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 				}
 
 				// read number of values from stream	
-				(*(arg++)).AsInt32 ();
+				int num_vals = (*(arg++)).AsInt32 ();
 				//std::cout << control_name << std::endl;
 	
 				//std::cout << (*arg).TypeTag () << std::endl;
-				while (arg != message->ArgumentsEnd ())
+				for (int i = 0;arg != message->ArgumentsEnd () &&  i < num_vals; ++i)
 				{
 					float control_value;
 	
