@@ -77,8 +77,6 @@ option(JACK "Build with jack support for the FFT UGen")
 
 set(plugins "")
 
-GET_GCC_VERSION(gcc_version)
-
 set(INSTALL_DESTINATION_PLUGINS "lib/scgraph/plugins")
 
 if (LINUX)

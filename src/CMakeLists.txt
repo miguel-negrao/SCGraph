@@ -53,7 +53,7 @@ set(oscpack_srcs
   oscpack/osc/OscTypes 
   oscpack/ip/IpEndpointName )
 
-if(POSIX)
+if(POSIX OR APPLE)
   set(oscpack_srcs ${oscpack_srcs}
     oscpack/ip/posix/NetworkingUtils 
     oscpack/ip/posix/UdpSocket)
