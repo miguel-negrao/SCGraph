@@ -1,5 +1,5 @@
 a.sendMsg("/g_new", 1, 0, 0);
-
+s = GServer.new("scgraph", a);
 
 (
 SynthDef (\EEGHead,
@@ -27,7 +27,7 @@ SynthDef (\Grain,
 
 	grain = GColor.gr
 	(
-		GStretch.ar 
+		GStretch.gr 
 		(
 			GTranslate.gr 
 			(

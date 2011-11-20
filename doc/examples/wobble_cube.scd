@@ -92,4 +92,3 @@ s.program
 
 {GGLRenderer.gr(GPolygon.gr([[0,0,0], [1,0,0], [1,1,0], [0,1,0]]))}.play
 {GPoints.gr}.play
-"a\nb\nc"

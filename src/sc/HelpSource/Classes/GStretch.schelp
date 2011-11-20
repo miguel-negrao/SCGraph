@@ -1,0 +1,23 @@
+class:: GStretch
+summary:: 
+related:: SCGraph
+categories:: SCGraph>Positioning
+
+
+
+Description::
+
+
+
+
+classmethods::
+
+method::gr
+
+argument::in
+
+
+argument::stretch_vector
+
+
+

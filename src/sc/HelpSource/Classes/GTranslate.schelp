@@ -1,0 +1,22 @@
+class:: GTranslate
+summary:: 
+related:: SCGraph
+categories:: SCGraph>Positioning
+
+
+Description::
+
+
+
+
+classmethods::
+
+method::gr
+
+argument::in
+
+
+argument::displacement_vector
+
+
+

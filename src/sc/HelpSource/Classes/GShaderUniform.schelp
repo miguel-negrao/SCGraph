@@ -1,0 +1,21 @@
+class:: GShaderUniform
+summary:: 
+related:: SCGraph
+categories:: SCGraph>Texture
+
+Description::
+
+A GL-Renderer
+
+
+classmethods::
+
+method::gr
+
+argument::in
+
+
+argument::values
+
+
+

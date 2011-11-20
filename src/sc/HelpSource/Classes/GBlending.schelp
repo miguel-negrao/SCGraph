@@ -1,0 +1,36 @@
+class:: GBlending
+summary:: 
+related:: SCGraph
+categories::  SCGraph>Texture
+
+
+Description::
+
+Blending options:
+
+	\blendZero
+
+	\blendOne
+
+	\blendDstColor
+
+	\blendSrcColor 
+
+	\blendOneMinusDstColor
+
+	\blendOneMinusSrcColor
+
+	\blendSrcAlpha 
+
+	\blendOneMinusSrcAlpha
+
+	\blendDstAlpha 
+
+	\blendOneMinusDstAlpha
+
+	\blendSrcAlphaSaturate
+
+
+classmethods::
+
+method::gr

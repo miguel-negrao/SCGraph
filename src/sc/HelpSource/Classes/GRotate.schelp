@@ -1,0 +1,20 @@
+class:: GRotate
+summary:: A GL-Renderer
+related:: SCGraph
+categories:: SCGraph>Positioning
+
+
+Description::
+
+
+classmethods::
+
+method::gr
+
+argument::in
+
+
+argument::angle
+
+
+

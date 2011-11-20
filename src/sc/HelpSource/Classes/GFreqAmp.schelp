@@ -1,0 +1,21 @@
+class:: GFreqAmp
+summary:: 
+related:: SCGraph
+categories::  SCGraph>Positioning
+
+
+Description::
+
+
+
+
+classmethods::
+
+method::gr
+
+argument::port = 0
+The port nr
+
+argument::freq = 0.5 
+/* == nyquist*0.5 */
+

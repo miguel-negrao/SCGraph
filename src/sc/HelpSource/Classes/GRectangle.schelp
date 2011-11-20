@@ -1,0 +1,19 @@
+class:: GRectangle
+summary:: 
+related:: SCGraph
+categories::  SCGraph>Primitives>2D
+
+
+Description::
+
+
+
+
+classmethods::
+
+method::gr
+
+argument::width
+
+argument::height
+

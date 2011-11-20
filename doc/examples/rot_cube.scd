@@ -10,7 +10,7 @@ SynthDef (\Test,
 	spot_direction = [-10,-5,-10];
 
 
-	light = GLight.ar 
+	light = GLight.gr 
 	(
 		spot_direction: spot_direction, 
 	  // specular_color: Color.rand.asArray, 
@@ -22,24 +22,24 @@ SynthDef (\Test,
   	geometry = Array.fill(15, 
 	{
 		arg i; 
-		GRotate.ar
+		GRotate.gr
 		(
-			GTranslate.ar
+			GTranslate.gr
 			(
-				GCube.ar, 
+				GCube.gr, 
 				[3*(i-8), 0, 0]
 			),
 			axis: rot_axis, angle: 3.131 * LFSaw.kr(0.1 * (i - 8))
 		)
 	}).sum;
 
-	renderer = GGLRenderer.ar(light + geometry, lighting:1, clear_mode:0, clear_color: [0,0,0,0.04]);
+	renderer = GGLRenderer.gr(light + geometry, lighting:1, clear_mode:0, clear_color: [0,0,0,0.04]);
 }).play(s)
 )
 
 (
 SynthDef (\Test,
 {
-	GGLRenderer.ar (GTranslate.ar (GCube.ar, [0, SinOsc.kr(1), 0]));
+	GGLRenderer.gr (GTranslate.gr (GCube.gr, [0, SinOsc.kr(1), 0]));
 }).play(s)
 )

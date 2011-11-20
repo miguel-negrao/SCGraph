@@ -1,3 +1,13 @@
+This is a fork of Florian Paul Schmidt's project on Sourceforge ( http://sourceforge.net/projects/scgraph/ ). Feel free to contribute/report bugs/fork here as the original project is "Abandonware" and Sourceforge is ugly. 
+
+The goal of this fork is to make it usable with SuperCollider 3.5 and finally expand SuperCollider's supremacy from the audio programming language universe to the realm of visuals.
+
+There is a mailing list on Sourceforge ( http://sourceforge.net/mailarchive/forum.php?forum_name=scgraph-users ), where the forkee is also subscribed, perhaps it could be re-activated.
+
+Thanks for listening. Original README follows after 79 dashes and one point.
+
+-------------------------------------------------------------------------------.
+
 - What is ScGraph?
 
  ScGraph is a graphics server following the SuperCollider3 OSC interface. Albeit with a changed semantics. Here's quick example code:
@@ -40,7 +50,7 @@ a.sendMsg("/s_new", "SimpleView", -1, 1, 0);
 
  If you want to know what kind of new units are supported, have look into either the class browser (all graphical units start with a capital "G") or into 
 
- $PREFIX/share/scgraph/sclang
+ $PREFIX/share/scgraph/sc
 
 - How to build
 

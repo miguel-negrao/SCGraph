@@ -1,0 +1,18 @@
+class:: GColor
+summary:: 
+related:: SCGraph
+categories:: SCGraph>Texture 
+
+
+Description::
+
+A coloring object
+
+( note that there is also the convenience instance-method Color:gr(in) )
+
+classmethods::
+
+method::gr
+
+
+

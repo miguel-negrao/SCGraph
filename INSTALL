@@ -1,14 +1,23 @@
 - Requirements:
 
- - Qt 4.2           (http://trolltech.com)
- - SuperCollider3   (http://supercollider.sf.net) - You need a build with development files installed.
+ - Qt 4.2+          (http://trolltech.com)
+ - SuperCollider3.5 (http://supercollider.sf.net) - You need a build with development files installed.
  - Boost            (http://www.boost.org/)
  - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
  - GraphicsMagick++ (http://www.graphicsmagick.org/)
  - Pthreads         (http://www.gnu.org/software/libc/)
  - SndFile          (http://www.mega-nerd.com/libsndfile/)
 
- Most of these should be available in all major linx distros. On Mac OS X you will have to do some tracking down and installing.
+ Most of these should be available in all major linx distros. 
+
+- Mac OS X
+
+ On Mac OS X you will have to do some tracking down and installing.
+ If you use homebrew and 10.7, you have to install GraphicsMagick with 
+    brew install --HEAD graphicsmagick
+    (see here why: https://github.com/mxcl/homebrew/issues/6881 )
+
+- Optional Dependencies
 
  If you want the JackClient (which can do fft analysis of audio input over a jack port), then you need:
 
@@ -18,30 +27,26 @@
 
 - How to build
 
- On the first run of make, a file will be created called
+ If you installed any of the required packages from source, make sure that pkg-config finds the respective .pc file (e.g. for libsndfile, graphicsmagick++ and jack) by virtue of the PKG_CONFIG_PATH environment variable.
+ E. g. if you are on Mac OS X and use homebrew, make sure it's set to:
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
- Makefile.include
+ The build system uses cmake, so:
 
- You can add addtitional compiler and linker flags in this file to tweak the build process to your setup. Most notable is the
-
- PREFIX
-
- variable (the PREFIX must not containt any "," (that's a single comma) characters). By default, ScGraph is installed to
-
- /usr/local
-
- and respective subdirs (bin, share, doc). Simply have a look at the Makefile.include to see what might be needed for your system (Any help on automating this process via tools, like autotools, or scons is very much appreciated)..
-
- If you installed any of the required packages from source, make sure that pkg-config finds the respective .pc file (e.g. for libsndfile, graphicsmagick++ and jack) by virtur of the PKG_CONFIG_PATH environment variable.
+ mkdir build
+ cd build/ && cmake ..
+ make
 
 - Caveats
 
- If you change the makefile (i.e. adding sources) and make seems to mysteriously fail without error, check whether all filenames correspond to the STUFF variable for real. Typos produce the mentioned mysterious failures. I haven't found the issue yet, but i guess it has to do with the dependency tracking or the Makefile.include.
+ If the SuperCollider sources are not found, make sure to set SC_PATH e. g. with ccmake:
+ 
+ cd build/ && ccmake ..
 
- Also try a 
+ Currently the linking doesn't work right on Mac OS X, so libscsynth is not found by the binary. You can fix this with:
 
- make reallyclean all
-
+ install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsynth.1.dylib path/to/scgraph
+ 
 - What to do if the build succeeded?
 
   - Add the 

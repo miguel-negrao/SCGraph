@@ -1,0 +1,21 @@
+class:: GShaderProgram
+summary:: A GL-Renderer
+related:: SCGraph
+categories:: SCGraph>Texture
+
+
+Description::
+
+Specify the index of a shaderprogram to use. Specify on = 0 to have no shader program used regardless of the index.
+
+classmethods::
+
+method::gr
+
+argument::in
+
+
+argument::on
+
+
+
