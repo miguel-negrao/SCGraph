@@ -1,6 +1,6 @@
 class:: GBorderedRectangle
 summary:: A GL-Renderer
-related:: SCGraph
+related:: Reference/scgraph
 categories::  SCGraph>Primitives>2D
 
 

@@ -1,6 +1,6 @@
 class:: GRotate
 summary:: A GL-Renderer
-related:: SCGraph
+related:: Reference/scgraph
 categories:: SCGraph>Positioning
 
 

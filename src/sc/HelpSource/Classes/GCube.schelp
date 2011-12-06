@@ -1,6 +1,6 @@
 class:: GCube
 summary:: render a GLCube in SCGraph
-related:: SCGraph
+related:: Reference/scgraph
 categories:: SCGraph>Primitives>3D
 
 Description::

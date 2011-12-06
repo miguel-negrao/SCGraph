@@ -1,14 +1,14 @@
 - Requirements:
 
  - Qt 4.2+          (http://trolltech.com)
- - SuperCollider3.5 (http://supercollider.sf.net) - You need a build with development files installed.
+ - SuperCollider 3.5 (http://supercollider.sf.net) - You need a build with development files installed.
  - Boost            (http://www.boost.org/)
  - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
  - GraphicsMagick++ (http://www.graphicsmagick.org/)
  - Pthreads         (http://www.gnu.org/software/libc/)
  - SndFile          (http://www.mega-nerd.com/libsndfile/)
 
- Most of these should be available in all major linx distros. 
+ Most of these should be available in all major linux distros. 
 
 - Mac OS X
 

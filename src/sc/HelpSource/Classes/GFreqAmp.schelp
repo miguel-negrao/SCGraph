@@ -1,21 +1,22 @@
 class:: GFreqAmp
 summary:: 
-related:: SCGraph
+related:: Reference/scgraph
 categories::  SCGraph>Positioning
 
 
 Description::
 
-
+Outputs the amplitude of the specified frequence in the input from the specified Jack-port.
 
 
 classmethods::
 
-method::gr
+method::kr
 
-argument::port = 0
-The port nr
+argument::port
 
-argument::freq = 0.5 
-/* == nyquist*0.5 */
+Port number.
 
+argument::freq
+
+Multiplicator for the Nyquist frequency (0.5 == Nyquist * 0.5).

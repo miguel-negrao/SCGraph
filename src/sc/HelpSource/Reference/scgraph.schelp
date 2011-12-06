@@ -6,7 +6,7 @@ categories:: SCGraph
 
 image::blurred_cube_white_alpha.png::
 
-In May 2007 i completed my studies of Computer Science (naturwissenschaftliche Informatik) at the Neuroinformatics group of the Faculty of Technology of the University of Bielefeld by handing in my diploma thesis. The subject of the thesis was “Design and Implementation of a 3D Graphics Server”. I was tutored by Till Bovermann, Thomas Hermann und Helge Ritter. In the course of the thesis i have developed ScGraph (short for “SuperCollider Graphics Server”).
+In May 2007 i completed my studies of Computer Science (naturwissenschaftliche Informatik) at the Neuroinformatics group of the Faculty of Technology of the University of Bielefeld by handing in my diploma thesis. The subject of the thesis was "Design and Implementation of a 3D Graphics Server". I was tutored by Till Bovermann, Thomas Hermann und Helge Ritter. In the course of the thesis i have developed ScGraph (short for "SuperCollider Graphics Server").
 
 section::Introduction
 
@@ -35,7 +35,7 @@ g.boot;
 )
 ::
 
-As a means to spawn a synth that outputs a 3D representation of a Cube (”gr” here means “graphics rate”). To reduce the implementation effort we decided to reuse the existing SynthDef (and related) classes. The SynthDef format and the OSC protocol of the graphics server is mainly unchanged from the original SuperCollider framework. In the graphics server graphics processing takes the place of audio rate processing, but keeping control rate processing.
+As a means to spawn a synth that outputs a 3D representation of a Cube ("gr" here means "graphics rate"). To reduce the implementation effort we decided to reuse the existing SynthDef (and related) classes. The SynthDef format and the OSC protocol of the graphics server is mainly unchanged from the original SuperCollider framework. In the graphics server graphics processing takes the place of audio rate processing, but keeping control rate processing.
 
 Actually, our example was a bit more involved:
 
@@ -140,13 +140,13 @@ list::
  ## Blending
  ## Textures (preliminary, hack’ish)
 
-section::Screenshots
-
-What’s a program overview without screenshots? So here we go:
-
 section::License
 
 ScGraph uses the GNU General public license (GPL) version 2.
+
+section::Screenshots
+
+What’s a program overview without screenshots? So here we go:
 
 image::scgraph_more_stuff.png::
 image::scgraph_crazy.png::
