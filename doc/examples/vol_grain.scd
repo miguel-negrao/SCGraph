@@ -7,7 +7,7 @@ SynthDef (\PointGrain,
 	arg x,y,z,alpha;
 	var source, env;
 
-	env = alpha * EnvGen.kr(Env.perc(releasetime: 1.0, level: 0.4), doneAction: 2);
+	env = alpha * EnvGen.kr(Env.perc(releaseTime: 1.0, level: 0.4), doneAction: 2);
 
 	source =  GColor.gr(GTranslate.gr(GTexQuad.gr(tex_index: 6), [x,y,z]), [1, 1, 1, env]);
 
@@ -24,8 +24,6 @@ SynthDef(\VerySimpleView,
 	GGLRenderer.gr(GBlending.gr(on: 1) + In.gr(0) + GBlending.gr(on: 0), texturing: 1, transparency: 1, clear_mode: 1, clear_color: [0,0,0,0.03]);
 }).send(s)
 )
-
-a.sendMsg("/s_new", "VerySimpleView", -1, 1, 0);
 
 v = Synth.new (\VerySimpleView, addAction: \addToTail)
 
