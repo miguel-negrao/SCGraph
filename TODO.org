@@ -27,10 +27,8 @@ OscHandler]: Error while parsing message: /g_new: wrong argument type
 **** TODO completionMsg
 
 **** TODO /n_setni
-*** TODO Buffer support
 *** TODO Improve texture support (via Buffers maybe?)
 *** TODO Extend SynthDef format to support strings, geometry, etc.
-*** TODO Fix up the GServer/GServerOptions classes
 
 *** TODO improve/write helpfiles
 *** TODO integrate Color class

@@ -315,11 +315,25 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 	{
 		case cmd_quit:
 		{
+			QReadLocker locker (&scgraph->_read_write_lock);
+			osc::OutboundPacketStream p (_message_buffer, SCGRAPH_OSC_MESSAGE_BUFFER_SIZE);
+
+			try
+			{
+				p << osc::BeginMessage ("/done") 
+				  << "/quit"
+				  << osc::EndMessage;
+	
+				_socket->SendTo (msg->_endpoint_name, p.Data (), p.Size ());
+			}
+			catch (osc::Exception &e)
+			{
+				std::cout << "[OscHandler]: Error: " << e.what () << std::endl;
+			}
 			QApplication::instance()->exit ();
 			// we are done anyways
 			//pthread_mutex_unlock (&_mutex);
 			std::cout << "[OscHandler]: cmd_quit()" << std::endl;
-
 			// return;
 		}
 		break;
@@ -564,7 +578,8 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 			// _socket->Connect (msg->_endpoint_name);
 			osc::OutboundPacketStream p (_message_buffer, SCGRAPH_OSC_MESSAGE_BUFFER_SIZE);
 	
-			p << osc::BeginBundleImmediate << osc::BeginMessage ("/done")
+			p << osc::BeginBundleImmediate 
+			  << osc::BeginMessage ("/done")
 			<< osc::EndMessage << osc::EndBundle;
 	
 			_socket->SendTo (msg->_endpoint_name, p.Data (), p.Size ());
@@ -589,7 +604,7 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 
 			try
 			{
-				p << osc::BeginMessage ("status.reply")	<< 1 << 2 << 2 << 2 << 10 << (float)0.1 << (float)0.1 << (double)48000.0 << (double)48000.0	<< osc::EndMessage;
+				p << osc::BeginMessage ("/status.reply")	<< 1 << 2 << 2 << 2 << 10 << (float)0.1 << (float)0.1 << (double)48000.0 << (double)48000.0	<< osc::EndMessage;
 	
 				_socket->SendTo (msg->_endpoint_name, p.Data (), p.Size ());
 			}
