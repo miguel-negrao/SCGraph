@@ -96,6 +96,7 @@ INCLUDE( ${QT_USE_FILE} )
 
 # this will run moc:
 QT4_WRAP_CPP( scgraph_moc_srcs ${scgraph_moc_hdrs} )
+qt4_add_resources( scgraph_rcc resources.qrc )
 
 ################################################################################
 # sc includes
@@ -125,7 +126,9 @@ endif(APPLE)
 ################################################################################
 ### build and link
 
-add_executable( scgraph ${scgraph_srcs} ${scgraph_moc_srcs} )
+add_executable( scgraph ${scgraph_srcs} 
+		${scgraph_moc_srcs}
+		${scgraph_rcc} )
 
 if(APPLE)
   TARGET_LINK_LIBRARIES( scgraph 

@@ -26,12 +26,15 @@
 #include <QtCore/QTimer>
 #include <QtCore/QReadWriteLock>
 
+#include <QtGui/QWidget>
+#include <QtGui/QIcon>
+
 // #include <SuperCollider/plugin_interface/SC_InterfaceTable.h>
 
 /** this class implements the singleton pattern and is the global
  * access point for pretty much everything */
 
-class ScGraph
+class ScGraph : public QApplication
 {
 	// QMutex                            _main_mutex;
 
