@@ -1,9 +1,7 @@
 GServer : Server {
 	classvar <>graphics;
 	classvar <>program;
-	classvar <default;
-
-	var verbosity = 0;
+	classvar <>default;
 
 	init { arg argName, argAddr, argOptions, argClientID;
 		argOptions = argOptions ? GServerOptions.new;
@@ -57,19 +55,31 @@ GServer : Server {
 		});
 	}
 
-	verbosity { arg verbosityLevel = 0;
+	verbosity {
+		^this.options.verbosity
+	}
+
+	verbosity_ { arg verbosityLevel = 0;
 		this.options.verbosity_(verbosityLevel);
-		this.sendMessage("/verbose", verbosityLevel)
+		this.sendMsg("/verbose", verbosityLevel)
 	}
 
-	controlRate { arg controlRate = 100;
+	controlRate {
+		^this.options.controlRate
+	}
+
+	controlRate_ { arg controlRate = 100;
 		this.options.controlRate_(controlRate);
-		this.sendMessage("/controlRate", controlRate)
+		this.sendMsg("/controlRate", controlRate)
 	}
 
-	graphicsRate { arg graphicsRate = 0;
+	graphicsRate {
+		^this.options.graphicsRate
+	}
+
+	graphicsRate_ { arg graphicsRate = 0;
 		this.options.graphicsRate_(graphicsRate);
-		this.sendMessage("/graphicsRate", graphicsRate)
+		this.sendMsg("/graphicsRate", graphicsRate)
 	}
 
 	bootServerApp {
@@ -83,8 +93,9 @@ GServerOptions : ServerOptions
 {
 	var <protocol = \udp;
 
-	var <>controlRate;
-	var <>graphicsRate;
+	var <>numControlBusChannels = 1024;
+	var <>controlRate = 100;
+	var <>graphicsRate = 50;
 	var <>realtimePriority = 0;
 
 	var <>synthDefPath;
