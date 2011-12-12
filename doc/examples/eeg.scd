@@ -1,29 +1,29 @@
-a.sendMsg("/g_new", 1, 0, 0);
-s = GServer.new("scgraph", a);
+g = GServer.default;
+g.boot;
 
 (
-SynthDef (\EEGHead,
+SynthDef(\EEGHead,
 {
 	arg chan1, chan2, chan3, chan4;
 
 	var head, channels;
 
-	head = GColor.gr(GTexQuad.gr (tex_index: 1), [1,1,1,0.4]);
-	Out.gr (0, head);
-}).send(s)
+	head = GColor.gr(GTexQuad.gr(tex_index: 1), [1,1,1,0.4]);
+	Out.gr(0, head);
+}).send(g)
 )
 
-e = Synth.new (\EEGHead, args: [], target: 1, addAction: \addToHead);
+e = Synth.new(\EEGHead, args: [], target: g, addAction: \addToHead);
 e.free
 
 (
-SynthDef (\Grain,
+SynthDef(\Grain,
 {
 	arg x,y,z,amp;
 
 	var grain, env;
 
-    env = Line.kr (1, 0, 2.5, doneAction: 2);
+    env = Line.kr(1, 0, 2.5, doneAction: 2);
 
 	grain = GColor.gr
 	(
@@ -31,19 +31,19 @@ SynthDef (\Grain,
 		(
 			GTranslate.gr 
 			(
-				GTexQuad.gr (tex_index: 2), 
+				GTexQuad.gr(tex_index: 2), 
 				[x,y,z]
 			), 
 			[0.5*(1-env), 0.5*(1-env), 1]
 		), 
 		[amp, 0, 1-amp, env]
 	);
-	Out.gr (0, grain);
-}).send(s)
+	Out.gr(0, grain);
+}).send(g)
 )
 
 (
-g = Synth.new 
+r = Synth.new 
 (
 	\Grain, 
 	args: 
@@ -74,32 +74,28 @@ SynthDef(\VerySimpleView,
 		texturing: 1, 
 		perspective: 0
 );
-}).play(s)
+}).send(g)
 )
 
 (
-v = Synth.new 
-(
+v = Synth.new(
 	\VerySimpleView, 
-	target: 1, 
-	addAction: \addToTail
-);
+	target: g, 
+	addAction: \addToTail);
 )
 v.free
 
 (
-f = TabFileReader.readInterpret 
-(
-	"/home/tapas/source/my_stuff/scgraph/doc/fulltext_latex/eeg_data_A"
-);
+f = TabFileReader.readInterpret(
+	"/home/tapas/source/my_stuff/scgraph/doc/fulltext_latex/eeg_data_A");
 )
 
 f[0][0]
 
 (
-l = Task.new (
+l = Task.new(
 {
-	f.do (
+	f.do(
 	{
 		arg x;
 		Synth.new 

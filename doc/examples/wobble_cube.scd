@@ -1,8 +1,6 @@
-a.sendMsg("/g_new", -1, 0, 0);
+g = GServer.default;
+g.boot;
 
-Server.default = s = Server(\scgraph, NetAddr("localhost", 37291))
-s.boot
-s.quit
 (
 SynthDef (\TestBlend,
 {
@@ -86,9 +84,5 @@ SynthDef (\TestBlend,
 		transparency: 1,
 		clear_color: [0, 0, 0, 0.04]
 	);
-}).play
+}).play(g)
 )
-s.program
-
-{GGLRenderer.gr(GPolygon.gr([[0,0,0], [1,0,0], [1,1,0], [0,1,0]]))}.play
-{GPoints.gr}.play

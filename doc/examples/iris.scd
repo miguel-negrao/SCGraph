@@ -1,37 +1,29 @@
-a.sendMsg("/g_new", 1, 0, 0);
+g = GServer.default;
+g.boot;
 
-s = GServer.local.boot
-
-s.freeAll(1)
 (
-SynthDef (\CoordinateSystem,
-{
-	Out.ar 
-	(
+SynthDef (\CoordinateSystem, {
+	Out.ar(
 		0, 
-		  GColor.gr(GLine.gr(1.0, [0,0,0], [1,0,0]), Color.red.asArray) 
+		GColor.gr(GLine.gr(1.0, [0,0,0], [1,0,0]), Color.red.asArray) 
 		+ GColor.gr(GLine.gr(1.0, [0,0,0], [0,1,0]), Color.green.asArray) 
 		+ GColor.gr(GLine.gr(1.0, [0,0,0], [0,0,1]), Color.blue.asArray)
 	);
-}).send(s)
+}).send(g)
 )
 
-e = Synth.new (\CoordinateSystem, target: s, addAction: \addToHead);
+e = Synth.new (\CoordinateSystem, target: g, addAction: \addToHead);
 e.free
 
 (
-SynthDef (\Grain,
-{
+SynthDef (\Grain, {
 	arg x,y,z, r=1.0, g=1.0, b=1.0, wx=0.0, wy=0.0, wz=0.0, size = 0.01;
 
 	var grain;
 
-	grain = GColor.gr
-	(
-		GTranslate.gr 
-		(
-			GStretch.gr 
-			(
+	grain = GColor.gr(
+		GTranslate.gr(
+			GStretch.gr(
 				GCube.gr (), 
 				[
 					size + (size * wx * SinOsc.kr(5)),
@@ -43,13 +35,12 @@ SynthDef (\Grain,
 		), 
 		[r,g,b,1]
 	);
-	Out.gr (0, grain);
-}).send(s)
+	Out.gr(0, grain);
+}).send(g)
 )
 
 (
-g = Synth.new 
-(
+r = Synth.new(
 	\Grain, 
 	args: 
 	[
@@ -61,10 +52,9 @@ g = Synth.new
 		\wz, 0.3,
 	],
 	target:v, 
-	addAction: \addBefore
+	addAction: \addBefore)
 )
-)
-g.free
+r.free
 
 (
 SynthDef(\VerySimpleView,
@@ -78,16 +68,11 @@ SynthDef(\VerySimpleView,
 		texturing: 1, 
 		perspective: 1
 );
-}).send(s)
+}).send(g)
 )
 
 (
-v = Synth.new 
-(
-	\VerySimpleView, 
-	target: s, 
-	addAction: \addToTail
-);
+v = Synth.new(\VerySimpleView, target: g, addAction: \addToTail);
 )
 v.free
 
@@ -97,9 +82,6 @@ f = TabFileReader.readInterpret
 	"/home/tapas/source/my_projects/scgraph/thesis/fulltext_latex/iris_data2.txt"
 );
 )
-
-{GCube.gr}.play(s)
-
 
 f[0][0]
 

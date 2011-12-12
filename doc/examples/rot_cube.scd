@@ -1,14 +1,12 @@
-a.sendMsg("/g_new", -1, 0, 0);
-
+g = GServer.default;
+g.boot;
 
 (
-SynthDef (\Test,
-{
+SynthDef (\Test, {
 	var light, geometry, renderer, rot_axis, spot_direction;
 
 	rot_axis = [SinOsc.kr(0.361), SinOsc.kr(0.231, phase: 1.7), SinOsc.kr(0.23456)];
 	spot_direction = [-10,-5,-10];
-
 
 	light = GLight.gr 
 	(
@@ -34,12 +32,12 @@ SynthDef (\Test,
 	}).sum;
 
 	renderer = GGLRenderer.gr(light + geometry, lighting:1, clear_mode:0, clear_color: [0,0,0,0.04]);
-}).play(s)
+}).play(g)
 )
 
 (
 SynthDef (\Test,
 {
 	GGLRenderer.gr (GTranslate.gr (GCube.gr, [0, SinOsc.kr(1), 0]));
-}).play(s)
+}).play(g)
 )

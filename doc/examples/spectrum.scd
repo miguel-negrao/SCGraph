@@ -1,6 +1,8 @@
+g = GServer.default;
+g.boot;
+
 (
-SynthDef (\Spectrum,
-{
+SynthDef (\Spectrum, {
 	var bars;
 
 	bars = Array.fill 
@@ -27,5 +29,5 @@ SynthDef (\Spectrum,
 	).sum;
 
 	GGLRenderer.gr (bars, clear_mode: 1, clear_color: [0, 0.2, 0, 0.2]);
-}).play
+}).play(g)
 )
