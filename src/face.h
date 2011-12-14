@@ -13,7 +13,9 @@
 struct Face : public DeepCopyable
 {
 	/** these types correspond to OpenGL types for vertices */
-	enum GeometryType {POINTS, LINES, LINE_STRIP, LINE_LOOP, TRIANGLES, QUADS, TRIANGLE_STRIP, QUAD_STRIP, POLYGON};
+  enum GeometryType {POINTS, LINES, LINE_STRIP, LINE_LOOP, TRIANGLES, 
+		     QUADS, TRIANGLE_STRIP, TRIANGLE_FAN, QUAD_STRIP,
+		     POLYGON};
 
 	GeometryType _geometry_type;
 
