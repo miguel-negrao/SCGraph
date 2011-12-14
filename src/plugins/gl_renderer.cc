@@ -605,6 +605,14 @@ void GLRenderer::draw_face (const Face &face)
 			glEnd ();
 		break;
 
+		case Face::TRIANGLE_FAN:
+			glBegin (GL_TRIANGLE_FAN);
+
+			do_face (face);
+
+			glEnd ();
+		break;
+
 		case Face::QUAD_STRIP:
 			glBegin (GL_QUAD_STRIP);
 

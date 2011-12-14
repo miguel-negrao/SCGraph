@@ -8,13 +8,12 @@ endif()
 ################################################################################
 ### sources
 
-set(plugins_srcs bordered_rectangle cube gl_renderer translate rotate stretch binary_op mul_add color light line points triangle rectangle polygon quad blending lighting culling transformation material shader_program)
+set(plugins_srcs bordered_rectangle cube gl_renderer translate rotate
+stretch binary_op mul_add color light line point points triangle rectangle
+polygon quad blending lighting culling tube transformation material shader_program)
 
 ################################################################################
 ### qt
-
-set(plugins_moc_hdrs bordered_rectangle.h cube.h gl_renderer.h translate.h rotate.h stretch.h binary_op.h mul_add.h color.h light.h line.h points.h triangle.h rectangle.h polygon.h quad.h blending.h lighting.h culling.h transformation.h material.h shader_program.h)
-
 # add some useful macros and variables
 INCLUDE( ${QT_USE_FILE} )
 
