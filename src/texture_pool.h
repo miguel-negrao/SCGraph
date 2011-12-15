@@ -6,6 +6,8 @@
 #include <string>
 
 #include <QtCore/QObject>
+#include <QtGui/QImage>
+#include <QtGui/QColor>
 
 
 /** a texture image in RGBA format with unsigned chars as data */

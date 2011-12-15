@@ -10,19 +10,6 @@ find_package(Threads)
 
 ################################################################################
 
-pkg_check_modules (GraphicsMagick++ GraphicsMagick++)
-
-if(!PKGCONFIG_FOUND)
-  find_package(GraphicsMagick++)
-  if(!GraphicsMagick++_FOUND)
-    message(SEND_ERROR "Cannot find graphicsmagic")
-  endif(!GraphicsMagick++_FOUND)
-endif(!PKGCONFIG_FOUND)
-
-include_directories(${GraphicsMagick++_INCLUDE_DIRS})
-
-################################################################################
-
 set(scgraph_srcs main cow_ptr transformation_command transformation_command_visitor graphics_visitor obj_loader loader_3d buffer_pool matrix node_tree synth node group options scgraph synthdef control_loop graphic_loop synthdef_file util synthdef_pool plugin_pool plugin unit  osc_handler graphics tree in_out control graphics_bus material face color_rgba vector_3d hvector_3d vector_2d sc_unit_wrapper sc__unit texture_pool ui_pool shader_pool)
 
 # configure a header file to pass some of the CMake settings
@@ -134,8 +121,6 @@ if(APPLE)
   TARGET_LINK_LIBRARIES( scgraph 
     ${QT_LIBRARIES} 
     ${CMAKE_THREAD_LIBS_INIT}
-    ${GraphicsMagick++_LDFLAGS} 
-    ${GraphicsMagick++_CFLAGS}
     -L${SC3_LIBRARY_PATH}
     ${OPENGL_LIBRARIES}
     scsynth
@@ -147,8 +132,6 @@ if(APPLE)
 elseif(LINUX)
 TARGET_LINK_LIBRARIES( scgraph 
     ${CMAKE_THREAD_LIBS_INIT}
-    ${GraphicsMagick++_LDFLAGS} 
-    ${GraphicsMagick++_CFLAGS}
     -L${SC3_LIBRARY_PATH}
     scsynth
     stdc++
@@ -163,8 +146,6 @@ TARGET_LINK_LIBRARIES( scgraph
 else(APPLE)
 TARGET_LINK_LIBRARIES( scgraph 
     ${CMAKE_THREAD_LIBS_INIT}
-    ${GraphicsMagick++_LDFLAGS} 
-    ${GraphicsMagick++_CFLAGS}
     -L${SC3_LIBRARY_PATH}
     scsynth
     stdc++

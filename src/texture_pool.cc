@@ -9,8 +9,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-#include <Magick++.h>
-
 #include <cstring>
 
 Texture::Texture (int width, int height, int channels)
@@ -133,60 +131,57 @@ void TexturePool::add_image (const std::string &filename)
 		std::cout << "[TexturePool]: Adding texture image: " << filename << std::endl;
 
 	try
-	{
-		Magick::Image image;
-		image.read (filename);
-	
-		int im_width, im_height, tex_width, tex_height;
-	
-		tex_width =  (int)pow(2,(int)ceil(log2(image.columns())));
-		tex_height = (int)pow(2,(int)ceil(log2(image.rows())));
+            {
 
-		im_width = image.columns();
-		im_height = image.rows();
+                const char * tmp = filename.c_str();
+                QImage image(tmp);
+          
+ 
+		int im_width, im_height, tex_width, tex_height;
+
+		im_width = image.width();
+		im_height = image.height();
+	
+		tex_width =  (int)pow(2,(int)ceil(log2(im_width)));
+		tex_height = (int)pow(2,(int)ceil(log2(im_height)));
 
 		if (options->_verbose >= 2)
-		{
+                    {
 			std::cout << "  [TexturePool]: Texture Width/Height: " << tex_width << "/" << tex_height << std::endl;
 			std::cout << "  [TexturePool]: Image source Width/Height: " << im_width << "/" << im_height << std::endl;
-		}
+                    }
 
 		// std::cout << width << " " << height << std::endl;
 	
 		boost::shared_ptr<Texture> t(new Texture (tex_width, tex_height, 4));
 
 		for (int i = 0; i < im_width; ++i)
-		{
+                    {
 			for (int j = 0; j < im_height; ++j)
-			{
+                            {
 				//std::cout << (image.pixelColor(i,j).alphaQuantum()/1.0) << std::endl;
 
 				/* swap image */
-				Magick::ColorRGB color = image.pixelColor(i,im_height - j);
+				QColor color = image.pixel(i,im_height - j - 1);
 
-				t->_data[4 * (tex_width * j + i)]     = (unsigned char) (255.0 * color.red());
-				t->_data[4 * (tex_width * j + i) + 1] = (unsigned char) (255.0 * color.green());
-				t->_data[4 * (tex_width * j + i) + 2] = (unsigned char) (255.0 * color.blue());
-				t->_data[4 * (tex_width * j + i) + 3] = (unsigned char) (255.0 * (1.0 - color.alpha())); 
-#if 0
-				t->_data[4 * (width * j + i)]     = (unsigned char)(image.pixelColor(i,j).redQuantum());
-				t->_data[4 * (width * j + i) + 1] = (unsigned char)(image.pixelColor(i,j).greenQuantum());
-				t->_data[4 * (width * j + i) + 2] = (unsigned char)(image.pixelColor(i,j).blueQuantum());
-				t->_data[4 * (width * j + i) + 3] = 255 - (unsigned char)(image.pixelColor(i,j).alphaQuantum());
-#endif
+                                int tmpIndex = 4 * (tex_width * j + i);
+				t->_data[tmpIndex]     = (unsigned char) (255.0 * color.redF());
+				t->_data[tmpIndex + 1] = (unsigned char) (255.0 * color.greenF());
+				t->_data[tmpIndex + 2] = (unsigned char) (255.0 * color.blueF());
+				t->_data[tmpIndex + 3] = (unsigned char) (255.0 * (1.0 - color.alphaF())); 
 				
-			}
-		}
+                            }
+                    }
 		_textures.push_back (t);
 	
 		if (options->_verbose >= 2)
-			std::cout << "  [TexturePool]: New texture has index: " << _textures.size() - 1 << std::endl;
+                    std::cout << "  [TexturePool]: New texture has index: " << _textures.size() - 1 << std::endl;
 	
 		emit (textures_changed());
-	}
-	catch (Magick::Exception &e)
+            }
+	catch (const char* error)
 	{
-		std::cout << "[TexturePool]: Problem loading texture: " << e.what () << std::endl;
+		std::cout << "[TexturePool]: Problem loading texture: " << error  << std::endl;
 	}
 	// emit(texture_added(_textures.size () - 1));
 }

@@ -11,8 +11,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-#include <Magick++.h>
-
 #include <cstring>
 
 ShaderPool *ShaderPool::_instance = 0;

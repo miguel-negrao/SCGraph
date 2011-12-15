@@ -4,7 +4,6 @@
  - SuperCollider 3.5 (http://supercollider.sf.net) - You need a build with development files installed.
  - Boost            (http://www.boost.org/)
  - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
- - GraphicsMagick++ (http://www.graphicsmagick.org/)
  - Pthreads         (http://www.gnu.org/software/libc/)
  - SndFile          (http://www.mega-nerd.com/libsndfile/)
 
@@ -13,9 +12,6 @@
 - Mac OS X
 
  On Mac OS X you will have to do some tracking down and installing.
- If you use homebrew and 10.7, you have to install GraphicsMagick with 
-    brew install --HEAD graphicsmagick
-    (see here why: https://github.com/mxcl/homebrew/issues/6881 )
 
 - Optional Dependencies
 
@@ -27,7 +23,7 @@
 
 - How to build
 
- If you installed any of the required packages from source, make sure that pkg-config finds the respective .pc file (e.g. for libsndfile, graphicsmagick++ and jack) by virtue of the PKG_CONFIG_PATH environment variable.
+ If you installed any of the required packages from source, make sure that pkg-config finds the respective .pc file (e.g. for libsndfile and jack) by virtue of the PKG_CONFIG_PATH environment variable.
  E. g. if you are on Mac OS X and use homebrew, make sure it's set to:
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 

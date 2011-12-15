@@ -35,8 +35,6 @@ endif()
 ################################################################################
 ### includes
 
-include_directories(${GraphicsMagick++_INCLUDE_DIRS})
-
 include_directories(${CMAKE_BINARY_DIR})
 
 include_directories(${SC_PATH}/include/plugin_interface)
