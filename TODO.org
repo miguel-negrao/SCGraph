@@ -14,6 +14,7 @@ install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsy
 "PointGrain"). Reason: [SynthDefPool]: Error: SynthDef not found!
 *** TODO Output seems to hang after a while
 *** TODO :cmake: GFreqAmp.sc{,help} gets installed regardless of Jack-Option
+*** TODO check normal vectors
 
 ** Wishlist
 *** TODO Optimization (too many copies are made at the moment due to the flexible routing possibilities)

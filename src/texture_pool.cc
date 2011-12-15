@@ -159,17 +159,15 @@ void TexturePool::add_image (const std::string &filename)
                     {
 			for (int j = 0; j < im_height; ++j)
                             {
-				//std::cout << (image.pixelColor(i,j).alphaQuantum()/1.0) << std::endl;
-
 				/* swap image */
-				QColor color = image.pixel(i,im_height - j - 1);
+				QRgb color = image.pixel(i,im_height - j - 1);
+                                //std::cout << qAlpha(color) << std::endl;
 
                                 int tmpIndex = 4 * (tex_width * j + i);
-				t->_data[tmpIndex]     = (unsigned char) (255.0 * color.redF());
-				t->_data[tmpIndex + 1] = (unsigned char) (255.0 * color.greenF());
-				t->_data[tmpIndex + 2] = (unsigned char) (255.0 * color.blueF());
-				t->_data[tmpIndex + 3] = (unsigned char) (255.0 * (1.0 - color.alphaF())); 
-				
+				t->_data[tmpIndex]     = (unsigned char) qRed(color);
+				t->_data[tmpIndex + 1] = (unsigned char) qGreen(color);
+				t->_data[tmpIndex + 2] = (unsigned char) qBlue(color);
+				t->_data[tmpIndex + 3] = (unsigned char) qAlpha(color);
                             }
                     }
 		_textures.push_back (t);

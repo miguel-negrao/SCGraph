@@ -215,7 +215,7 @@ void GLRenderer::add_texture (unsigned int index)
 {
 	_gl_widget->makeCurrent();
 
-	// TODO: error handling for gl etxture calls
+	// TODO: error handling for gl texture calls
 	_texture_handles.push_back (0);
 	glGenTextures (1, &_texture_handles[_texture_handles.size () - 1]);
 
@@ -226,7 +226,7 @@ void GLRenderer::clear_textures ()
 {
 	_gl_widget->makeCurrent();
 
-		/* we mke everything new here :) */
+		/* we make everything new here :) */
 	glDeleteTextures (_texture_handles.size (), &_texture_handles[0]);
 
 	_texture_handles.clear ();
@@ -386,7 +386,9 @@ void GLRenderer::change_textures ()
 
 		if (width == 0) 
 		{ /* Can't use that texture */ 
-			std::cout << "[TexturePool]: Warning: Can't upload texture " << i << ". Proxy call to glTexImage2D failed" << std::endl;
+			std::cout << "[TexturePool]: Warning: Can't upload texture " 
+                                  << i << ". Proxy call to glTexImage2D failed" 
+                                  << std::endl;
 		}
 
 		glTexImage2D 
@@ -599,6 +601,14 @@ void GLRenderer::draw_face (const Face &face)
 
 		case Face::TRIANGLE_STRIP:
 			glBegin (GL_TRIANGLE_STRIP);
+
+			do_face (face);
+
+			glEnd ();
+		break;
+
+		case Face::TRIANGLE_FAN:
+			glBegin (GL_TRIANGLE_FAN);
 
 			do_face (face);
 
