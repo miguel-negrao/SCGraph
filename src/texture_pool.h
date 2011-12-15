@@ -43,7 +43,7 @@ class TexturePool : public QObject
 		boost::shared_ptr<Texture> get_texture (unsigned int index);
 
 		/** if the index is -1, we simply add it to the end of the list */
-		void add_image (const std::string &path, unsigned int index);
+		unsigned int add_image (const std::string &path, unsigned int index);
 
 	signals:
 		void texture_added (unsigned int index);

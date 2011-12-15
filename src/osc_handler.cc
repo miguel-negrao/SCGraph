@@ -2,6 +2,7 @@
 #include "scgraph.h"
 
 #include "shader_pool.h"
+#include "texture_pool.h"
 
 #include <iostream>
 #include <stdexcept>
@@ -1003,9 +1004,39 @@ void OscHandler::handle_message_locked (OscMessage *msg)
 		break;
 
 		case cmd_loadTexture:
+                {
+                    osc::ReceivedMessage::const_iterator arg = message->ArgumentsBegin();
+	
+                    const char *path = 0;
+                    try
+			{
+                            path = (*(arg++)).AsString ();
+
+                            std::string tmp (path);
+                            if (options->_verbose >= 2)
+                                std::cout << "[OscHandler]: /loadTexture " << tmp << std::endl;
+
+                            QReadLocker locker (&scgraph->_read_write_lock);
+                            TexturePool::get_instance()->add_image(tmp, -1);
+
+                            //send_notifications ("/n_go", synth->_id);
+	
+			}
+                    catch (const char* error)
+			{
+                            if (path)
+                                std::cout << "[OscHandler]: Warning: Texture loading failed: (path: \"" << path << "\"). Reason: " << error << std::endl;
+			}
+                    catch (osc::Exception &e)
+			{
+                            std::cout << "[OscHandler]: Error while parsing message: /loadTexture: " << e.what () << ". TypeTags: " << message->TypeTags() << std::endl;
+			}
+                    //scgraph->unlock ();
+                }
 		break;
 
 		case cmd_loadTextureDir:
+
 		break;
 
 		default:
