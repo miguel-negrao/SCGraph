@@ -15,6 +15,7 @@ argument::size
 
 extent of the cube
 
+EXAMPLES::
 
 code::
 // simple example, just renders a (plain white) Cube at the origin of the coordinate system.

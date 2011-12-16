@@ -1,17 +1,17 @@
-#ifndef SCGRAPH_TRIANGLE_HH
-#define SCGRAPH_TRIANGLE_HH
+#ifndef SCGRAPH_CIRCLE_HH
+#define SCGRAPH_CIRCLE_HH
 
 #include "../unit.h"
 
-class Point : public GUnit
+class Circle : public GUnit
 {
 	cow_ptr<Geometry> _g;
 
 	int _segments;
 
 	public:
-		Point ();
-		~Point ();
+		Circle ();
+		~Circle ();
 
 		virtual void process_g (double delta_t);
 };

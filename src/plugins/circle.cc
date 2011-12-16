@@ -1,4 +1,4 @@
-#include "point.h"
+#include "circle.h"
 
 #include <iostream>
 
@@ -8,7 +8,7 @@ extern "C"
 {
     GUnit *create (size_t index, int special_index)
     {
-	return (GUnit*) new Point (); 
+	return (GUnit*) new Circle (); 
     }
 
     size_t get_num_of_units ()
@@ -19,7 +19,7 @@ extern "C"
     const char *get_unit_name (size_t index)
     {
 	if (index == 0)
-	    return "GPoint";
+	    return "GCircle";
 	else
 	    return 0;
     }
@@ -27,7 +27,7 @@ extern "C"
 
 
 
-Point::Point () :
+Circle::Circle () :
     _g(new Geometry),
     _segments(32)
 {
@@ -50,12 +50,12 @@ Point::Point () :
     _g.touch()->_faces.push_back(face);
 }
 
-Point::~Point ()
+Circle::~Circle ()
 {
-    // std::cout << "[Point]: Destructor" << std::endl;
+    // std::cout << "[Circle]: Destructor" << std::endl;
 }
 
-void Point::process_g (double delta_t)
+void Circle::process_g (double delta_t)
 {
     _graphics_outs[0]._graphics.clear();
     if (_segments != (int) *_control_ins[0]) {

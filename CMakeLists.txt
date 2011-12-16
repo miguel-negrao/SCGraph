@@ -103,4 +103,4 @@ else()
   install(DIRECTORY src/sc/ DESTINATION ${INSTALL_DESTINATION_DISTRO})
 endif(APPLE)
 
-install(DIRECTORY doc/examples DESTINATION share/doc/examples)
+install(DIRECTORY doc/examples DESTINATION share/scgraph/)

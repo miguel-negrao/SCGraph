@@ -8,8 +8,8 @@ endif()
 ################################################################################
 ### sources
 
-set(plugins_srcs bordered_rectangle cube gl_renderer translate rotate
-stretch binary_op mul_add color light line point points triangle rectangle
+set(plugins_srcs bordered_rectangle circle cube gl_renderer translate rotate
+stretch binary_op mul_add color light line points triangle rectangle
 polygon quad blending lighting culling tube transformation material shader_program)
 
 ################################################################################
