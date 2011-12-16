@@ -41,7 +41,7 @@
 
  Currently the linking doesn't work right on Mac OS X, so libscsynth is not found by the binary if it is run standalone. It works if you start the server from within sclang (with the GServer class). If you want to run it standalone anyways, you can fix this with:
 
- install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsynth.1.dylib path/to/scgraph
+ install_name_tool -change libscsynth.1.dylib path/to/libscsynth.1.dylib path/to/scgraph
  
 - What to do if the build succeeded?
 
