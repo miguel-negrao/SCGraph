@@ -1,13 +1,10 @@
 class:: GTexQuad
-summary:: A GL-Renderer
+summary:: A textured quad.
 related:: Reference/scgraph
 categories:: SCGraph>Texture
 
-categories::  
-
-
 Description::
-
+A textured quad.
 
 
 

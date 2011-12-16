@@ -1,12 +1,12 @@
 class:: GLight
-summary::
-related:: Reference/scgraph
+summary:: A light source.
+related:: Reference/scgraph, Classes/GLighting
 categories::SCGraph>Texture
 
 
 Description::
 
-
+A light source.
 
 
 classmethods::

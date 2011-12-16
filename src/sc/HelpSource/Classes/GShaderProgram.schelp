@@ -1,12 +1,14 @@
 class:: GShaderProgram
-summary:: A GL-Renderer
-related:: Reference/scgraph
+summary:: A shader program.
+related:: Reference/scgraph, Reference/Shaders
 categories:: SCGraph>Texture
 
 
 Description::
 
 Specify the index of a shaderprogram to use. Specify on = 0 to have no shader program used regardless of the index.
+
+See link::Reference/Shaders::.
 
 classmethods::
 

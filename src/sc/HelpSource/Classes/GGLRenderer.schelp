@@ -86,3 +86,55 @@ argument::fog_color
 argument::texturing 
 
 0 - off, 1 = on
+
+
+
+EXAMPLES::
+
+Boot a scgraph server:
+
+code::
+g = GServer.default;
+g.boot;
+::
+
+Example of a renderer that reads from Bus 0. You can "kill" the
+synth by closing the window. This renderer has central perspective
+turned off (useful for 2D stuff):
+
+code::
+{GGLRenderer.gr(in: In.gr(0), perspective: 0)}.play(g)
+::
+
+A renderer that reads from graphics bus 0 and features support for
+texturing, alpha blending and lighting:
+
+code::
+(
+{GGLRenderer.gr(
+	in: In.gr(0), 
+	texturing: 1,
+	transparency: 1,
+	lighting: 1
+)}.play(g)
+)
+::
+
+
+A simple example of a Synth that writes to a bus. Evaluate this after the above, 
+so the geometry producer is added to the head of the group and it gets to 
+create its output before the renderer tries to read it :)
+
+code::
+(
+SynthDef(\foo, 	{
+	Out.gr(
+		0, 
+		GColor.gr(
+			GQuad.gr,
+			[0.5 + (0.5 * SinOsc.kr(1.1, phase: 0.3)), 0.5 + (0.5 * SinOsc.kr(1.0)), 0, 0]
+		)
+	)
+}).play(g)
+)
+::

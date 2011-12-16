@@ -1,5 +1,5 @@
 class:: GColor
-summary:: 
+summary:: Coloring object
 related:: Reference/scgraph
 categories:: SCGraph>Texture 
 
@@ -14,5 +14,9 @@ classmethods::
 
 method::gr
 
+argument::in
+
+argument::color
+A four element vector.
 
 

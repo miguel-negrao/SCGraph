@@ -1,12 +1,12 @@
 class:: GLighting
-summary:: 
-related:: Reference/scgraph
+summary:: Turns lighting on/off.
+related:: Reference/scgraph, Classes/GLight
 categories:: SCGraph>Texture
 
 
 
 Description::
-
+Turns lighting on/off.
 
 
 

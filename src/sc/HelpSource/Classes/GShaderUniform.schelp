@@ -1,12 +1,11 @@
 class:: GShaderUniform
-summary:: 
-related:: Reference/scgraph
+summary:: Control uniforms.
+related:: Reference/scgraph, Reference/Shaders
 categories:: SCGraph>Texture
 
 Description::
 
-A GL-Renderer
-
+See link::Reference/Shaders::.
 
 classmethods::
 
