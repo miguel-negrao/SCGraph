@@ -1,12 +1,9 @@
 * ToDo
 ** Bugs
-*** TODO :cmake: broken linking on OSX
-workaround for now:
-install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsynth.1.dylib src/scgraph
+
 *** TODO :cmake: test fft ugen building (on linux)
 *** TODO :cmake: No build targets
 *** TODO /n_set can't handle arrays of values
-*** TODO .gr are 'audio'-rate?!
 *** TODO Error in node_tree.cc?
 [[file:doc/examples/vol_grain.scd][examples/vol-grain.scd]]
 [OscHandler]: /s_new PointGrain 14108 0 1
@@ -33,9 +30,13 @@ OscHandler]: Error while parsing message: /g_new: wrong argument type
 *** TODO improve/write helpfiles
 *** TODO integrate Color class
 *** TODO detect and refuse synth defs which contain .ar-ugens
-*** TODO add syntax highlighting in Emacs (.gr-Support)
 *** TODO Video-Support?
 *** TODO JitLib-Support
 *** TODO Text-Support
 *** TODO s.record/s.stopRecording to Video
 *** TODO Multichannel-Expansion-Support
+*** TODO :cmake: fix broken linking on OSX
+workaround for now:
+install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsynth.1.dylib src/scgraph
+
+*** TODO .gr are 'audio'-rate?!

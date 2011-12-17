@@ -33,6 +33,14 @@
  cd build/ && cmake ..
  make
 
+- Highlighting of .gr in emacs
+
+  If you want to have .gr highlighted like .kr and .ar in emacs sclang-mode, add this to e. g. your .emacs.d/init.el:
+
+  (add-hook 'sclang-mode-hook
+          '(lambda () (push "gr" sclang-font-lock-method-list))
+          t)
+
 - Caveats
 
  If the SuperCollider sources are not found, make sure to set SC_PATH e. g. with ccmake:
