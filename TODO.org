@@ -13,7 +13,6 @@ install_name_tool -change libscsynth.1.dylib /Applications/SuperCollider/libscsy
 [OscHandler]: Warning: Synth creation failed (SynthDef-name:
 "PointGrain"). Reason: [SynthDefPool]: Error: SynthDef not found!
 *** TODO Output seems to hang after a while
-*** TODO :cmake: GFreqAmp.sc{,help} gets installed regardless of Jack-Option
 *** TODO check normal vectors
 
 ** Wishlist

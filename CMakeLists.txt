@@ -97,10 +97,21 @@ endif(LINUX)
 ### install docs, sc classes and examples
 
 if(APPLE)
-  install(DIRECTORY src/sc/ DESTINATION
-    ${CMAKE_BINARY_DIR}/${INSTALL_DESTINATION_DISTRO})
-else()
-  install(DIRECTORY src/sc/ DESTINATION ${INSTALL_DESTINATION_DISTRO})
+  if(JACK)
+    install(DIRECTORY src/sc/ DESTINATION
+      ${CMAKE_BINARY_DIR}/${INSTALL_DESTINATION_DISTRO})
+  else(JACK)
+    install(DIRECTORY src/sc/ DESTINATION
+      ${CMAKE_BINARY_DIR}/${INSTALL_DESTINATION_DISTRO}
+      PATTERN "GFreqAmp*" EXCLUDE)
+  endif(JACK)
+else(APPLE)
+  if(JACK)
+    install(DIRECTORY src/sc/ DESTINATION ${INSTALL_DESTINATION_DISTRO})
+  else(JACK)
+    install(DIRECTORY src/sc/ DESTINATION ${INSTALL_DESTINATION_DISTRO} 
+      PATTERN "GFreqAmp*" EXCLUDE)
+  endif(JACK)
 endif(APPLE)
 
 install(DIRECTORY doc/examples DESTINATION share/scgraph/)
