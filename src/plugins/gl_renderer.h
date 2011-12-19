@@ -24,7 +24,9 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QLabel>
 
-
+#include <QtGui/QImage>
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
 
 #include <QtOpenGL/QGLWidget>
 
@@ -53,6 +55,7 @@ class GLRenderWidget : public QGLWidget
 		void resizeGL (int w, int h);
 		void paintGL ();
 		void initializeGL ();
+		void makeScreenshot ();
 };
 
 class GLMainWindow : public QMainWindow

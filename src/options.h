@@ -48,6 +48,7 @@ class Options
 		std::string   _sc_plugin_path;
 		std::string   _texture_path;
 		std::string   _shader_path;
+		std::string   _recording_path;
 };
 
 #endif

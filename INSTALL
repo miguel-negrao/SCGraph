@@ -3,14 +3,12 @@
  - Qt 4.2+          (http://trolltech.com)
  - SuperCollider 3.5 (http://supercollider.sf.net) - You need a build with development files installed.
  - Boost            (http://www.boost.org/)
+ - CMake            (http://www.cmake.org/)
  - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
  - Pthreads         (http://www.gnu.org/software/libc/)
  - SndFile          (http://www.mega-nerd.com/libsndfile/)
 
  Most of these should be available in all major linux distros. 
-
-- Mac OS X
-
  On Mac OS X you will have to do some tracking down and installing.
 
 - Optional Dependencies

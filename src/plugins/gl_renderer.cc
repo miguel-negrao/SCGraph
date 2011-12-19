@@ -3,6 +3,7 @@
 #include "gl_renderer.h"
 
 #include "../texture_pool.h"
+#include "../options.h"
 
 
 
@@ -122,6 +123,27 @@ void GLRenderWidget::keyPressEvent (QKeyEvent *event)
 }
 
 
+void GLRenderWidget::makeScreenshot ()
+{
+	try	{
+		QImage img = grabFrameBuffer();
+	
+		Options *options = Options::get_instance();
+		QString path = QString::fromStdString(options->_recording_path);
+		path.append("/screenshot-");
+
+		QDateTime datetime = QDateTime::currentDateTime();
+		path.append(datetime.toString("yyyyMMdd-hhmmss-zzz"));
+		path.append(".png");
+
+		img.save(path);
+		std::cout << "[Screenshot] saved to " << path.toStdString() << std::endl;
+	}
+	catch (const char* error) {
+		std::cout << "[Screenshot]: " << error << std::endl;
+	}
+}
+
 void GLRenderWidget::keyReleaseEvent (QKeyEvent *event)
 {
 	_renderer->keyReleaseEvent (event);
@@ -180,7 +202,7 @@ GLRenderer::GLRenderer () :
 	// std::cout << "[GLRenderer]: constructor" << std::endl;
 
 	_main_window = new GLMainWindow (this);
-	_gl_widget   = new GLRenderWidget (_main_window, this);
+	_gl_widget	 = new GLRenderWidget (_main_window, this);
 	_main_window->setCentralWidget (_gl_widget);
 
 	_main_window->setAttribute (Qt::WA_DeleteOnClose, false);
@@ -387,8 +409,8 @@ void GLRenderer::change_textures ()
 		if (width == 0) 
 		{ /* Can't use that texture */ 
 			std::cout << "[TexturePool]: Warning: Can't upload texture " 
-                                  << i << ". Proxy call to glTexImage2D failed" 
-                                  << std::endl;
+					  << i << ". Proxy call to glTexImage2D failed" 
+					  << std::endl;
 		}
 
 		glTexImage2D 
@@ -665,7 +687,7 @@ void GLRenderer::do_light (const Light &light)
 	glLightfv(index, GL_POSITION, &(light._position._c[0]));
 	glLightfv(index, GL_SPOT_DIRECTION, &(light._spot_direction._c[0]));
 	glLightfv(index, GL_AMBIENT, &(light._ambient_color._c[0]));
-	// std::cout << "am: " << light._ambient_color._c[0] << " " <<  light._ambient_color._c[1] << " " << light._ambient_color._c[2] << std::endl;
+	// std::cout << "am: " << light._ambient_color._c[0] << " " <<	light._ambient_color._c[1] << " " << light._ambient_color._c[2] << std::endl;
 	glLightfv(index, GL_DIFFUSE, &(light._diffuse_color._c[0]));
 	glLightfv(index, GL_SPECULAR, &(light._specular_color._c[0]));
 
@@ -886,7 +908,7 @@ void GLRenderer::really_process_g (double delta_t)
 
 #if 0
 	_forward -= delta_t *  (_forward);
-	_sideward -= delta_t *  (_sideward);
+	_sideward -= delta_t *	(_sideward);
 	_upward -= delta_t *  (_upward);
 #endif
 
@@ -913,7 +935,7 @@ void GLRenderer::really_process_g (double delta_t)
 
 	_rotation_matrix.normalize ();
 
-	_transformation_matrix  = _transformation_matrix.mul (_rotation_matrix);
+	_transformation_matrix	= _transformation_matrix.mul (_rotation_matrix);
 	_transformation_matrix = _transformation_matrix.mul (m);
 
 	_ren_mouse_x = _cur_mouse_x;
@@ -959,8 +981,8 @@ void GLRenderer::really_process_g (double delta_t)
 
 		glVertex3f(-1, -1, 0);
 		glVertex3f( 1, -1, 0);
-		glVertex3f( 1,  1, 0);
-		glVertex3f(-1,  1, 0);
+		glVertex3f( 1,	1, 0);
+		glVertex3f(-1,	1, 0);
 
 		glEnd ();
 
@@ -1129,6 +1151,9 @@ void GLRenderer::really_process_g (double delta_t)
 		_gl_widget->renderText (10, y_offset, "F - toggle fullscreen");
 		y_offset += 13;
 
+		_gl_widget->renderText (10, y_offset, "S - screenshot");
+		y_offset += 13;
+
 		_gl_widget->renderText (10, y_offset, "UPARROW - forward");
 		y_offset += 13;
 
@@ -1295,6 +1320,16 @@ void GLRenderer::keyPressEvent (QKeyEvent *event)
 			return;
 		break;
 
+		case Qt::Key_S: 
+		{
+			if(event->isAutoRepeat() == false) {
+				_gl_widget->makeScreenshot();			
+			}
+			event->accept ();
+			return;
+		}
+		break;
+	
 		case Qt::Key_I:
 			_show_info = !_show_info;
 

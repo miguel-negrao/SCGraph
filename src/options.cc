@@ -116,6 +116,10 @@ Options::Options (int argc, char *argv[]) :
 	_shader_path = getenv ("HOME");
 	_shader_path += "/.scgraph/shaders";
 
+	_recording_path = getenv ("HOME");
+	_recording_path += "/.scgraph/recordings";
+
+
 	/* check environment vars */
 	char *tmp;
 	if ((tmp = getenv ("SCGRAPH_SYNTHDEF_PATH")))
