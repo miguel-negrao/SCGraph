@@ -14,6 +14,9 @@ if (APPLE OR WIN32)
   set(PLUGIN_EXTENSION ".bundle")
 endif()
 
+if (CMAKE_SYSTEM_NAME MATCHES "Linux")
+        set(LINUX 1)
+endif()
 ################################################################################
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules
@@ -114,4 +117,4 @@ else(APPLE)
   endif(JACK)
 endif(APPLE)
 
-install(DIRECTORY doc/examples DESTINATION share/scgraph/)
+install(DIRECTORY doc/examples DESTINATION share/scgraph)

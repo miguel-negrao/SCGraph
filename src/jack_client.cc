@@ -27,13 +27,18 @@ JackClient::JackClient (int num_of_ports, const std::string &jack_name) :
 {
 	Options *options = Options::get_instance ();
 
+
+	jack_status_t jack_status;
+	jack_options_t  jack_options = JackNullOption;
+
+
 	if (options->_verbose >= 1)
 		std::cout << "[JackClient]: Initializing " << num_of_ports << " ports" << std::endl;
 
 	if (num_of_ports == 0)
 		return;
 
-	_client = jack_client_new (_jack_name.c_str ());
+	_client = jack_client_open (_jack_name.c_str (), jack_options, &jack_status);
 	if (!_client)
 		throw ("[JackClient]: Error: couldn't register as jack client");
 

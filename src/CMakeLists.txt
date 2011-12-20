@@ -133,6 +133,7 @@ elseif(LINUX)
 TARGET_LINK_LIBRARIES( scgraph 
     ${CMAKE_THREAD_LIBS_INIT}
     -L${SC3_LIBRARY_PATH}
+    ${OPENGL_LIBRARIES}
     scsynth
     stdc++
     ${QT_LIBRARIES} 
@@ -147,6 +148,7 @@ else(APPLE)
 TARGET_LINK_LIBRARIES( scgraph 
     ${CMAKE_THREAD_LIBS_INIT}
     -L${SC3_LIBRARY_PATH}
+    ${OPENGL_LIBRARIES}
     scsynth
     stdc++
     ${QT_LIBRARIES} 
