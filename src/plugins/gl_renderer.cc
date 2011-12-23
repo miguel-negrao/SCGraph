@@ -30,6 +30,25 @@ extern "C" {
 }
 
 
+void writeImage (QImage img)
+{
+	try	{
+		Options *options = Options::get_instance();
+		QString path = QString::fromStdString(options->_recording_path);
+		path.append("/screenshot-");
+
+		QDateTime datetime = QDateTime::currentDateTime();
+		path.append(datetime.toString("yyyyMMdd-hhmmss-zzz"));
+		path.append(".png");
+
+		img.save(path);
+		std::cout << "[Screenshot] saved to " << path.toStdString() << std::endl;
+	}
+	catch (const char* error) {
+		std::cout << "[Screenshot]: " << error << std::endl;
+	}
+}
+
 GLRenderWidget::GLRenderWidget (QWidget *parent, GLRenderer *renderer) :
 	QGLWidget (parent),
 	_renderer (renderer)
@@ -126,18 +145,10 @@ void GLRenderWidget::keyPressEvent (QKeyEvent *event)
 void GLRenderWidget::makeScreenshot ()
 {
 	try	{
-		QImage img = grabFrameBuffer();
-	
-		Options *options = Options::get_instance();
-		QString path = QString::fromStdString(options->_recording_path);
-		path.append("/screenshot-");
+		// offload image saving to another thread
+		QFuture<void> future = QtConcurrent::run(writeImage,
+												 grabFrameBuffer());
 
-		QDateTime datetime = QDateTime::currentDateTime();
-		path.append(datetime.toString("yyyyMMdd-hhmmss-zzz"));
-		path.append(".png");
-
-		img.save(path);
-		std::cout << "[Screenshot] saved to " << path.toStdString() << std::endl;
 	}
 	catch (const char* error) {
 		std::cout << "[Screenshot]: " << error << std::endl;

@@ -28,7 +28,12 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
+#include <QtCore/QFuture>
+#include <QtCore/QtConcurrentRun>		
+
 #include <QtOpenGL/QGLWidget>
+
+void writeImage (QImage img);
 
 class GLRenderer;
 
@@ -56,6 +61,7 @@ class GLRenderWidget : public QGLWidget
 		void paintGL ();
 		void initializeGL ();
 		void makeScreenshot ();
+
 };
 
 class GLMainWindow : public QMainWindow
