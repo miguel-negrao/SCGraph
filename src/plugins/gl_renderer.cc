@@ -30,6 +30,47 @@ extern "C" {
 }
 
 
+Recorder::Recorder () :
+	_current_frame (0)
+{
+	Options *options = Options::get_instance();
+	_path = QString::fromStdString(options->_recording_path);
+	_path.append("/recording-");
+	
+	QDateTime datetime = QDateTime::currentDateTime();
+	_path.append(datetime.toString("yyyyMMdd-hhmmss-zzz-"));
+	_path.append(QString("%1").arg(options->_graphics_rate, 0, 10));
+	_path.append("fps-frame-");
+	
+	_format = "jpg";
+}	
+
+
+void Recorder::writeFrame (QImage img)
+{
+	try	{
+		QString tmp = QString(_path);
+		tmp.append(QString("%1").arg(_current_frame, 8, 10, QChar('0')));
+		tmp.append(".");
+		tmp.append(_format);
+		img.save(tmp);
+	}
+	catch (const char* error) {
+		std::cout << "[Recorder]: " << error << std::endl;
+	}
+}
+
+
+void Recorder::nextFrame (QImage img)
+{
+	QFuture<void> future = QtConcurrent::run(this,
+											 &Recorder::writeFrame,
+											 img);
+	// proxy function to increase frames
+	_current_frame++;
+}
+
+
 void writeImage (QImage img)
 {
 	try	{
@@ -39,9 +80,11 @@ void writeImage (QImage img)
 
 		QDateTime datetime = QDateTime::currentDateTime();
 		path.append(datetime.toString("yyyyMMdd-hhmmss-zzz"));
+
 		path.append(".png");
 
 		img.save(path);
+
 		std::cout << "[Screenshot] saved to " << path.toStdString() << std::endl;
 	}
 	catch (const char* error) {
@@ -51,7 +94,8 @@ void writeImage (QImage img)
 
 GLRenderWidget::GLRenderWidget (QWidget *parent, GLRenderer *renderer) :
 	QGLWidget (parent),
-	_renderer (renderer)
+	_renderer (renderer),
+	_recording (false)
 {
 	setMouseTracking (true);
 	setFocusPolicy (Qt::StrongFocus);
@@ -73,8 +117,9 @@ void GLRenderWidget::paintGL ()
 {
 	// makeCurrent ();
 	_renderer->really_process_g(_renderer->_delta_t);
+	if(_recording)
+		_recorder.nextFrame(grabFrameBuffer());
 }
-
 
 void GLRenderWidget::initializeGL ()
 {
@@ -144,15 +189,25 @@ void GLRenderWidget::keyPressEvent (QKeyEvent *event)
 
 void GLRenderWidget::makeScreenshot ()
 {
-	try	{
-		// offload image saving to another thread
-		QFuture<void> future = QtConcurrent::run(writeImage,
-												 grabFrameBuffer());
+	QFuture<void> future = QtConcurrent::run(writeImage,
+											 grabFrameBuffer());
+}
 
+bool GLRenderWidget::toggleRecording ()
+{
+	if(_recording) {
+		_recording = false;
+		_renderer->appendToWindowTitle("");
+		std::cout << "[Recorder] stopped" << std::endl;
 	}
-	catch (const char* error) {
-		std::cout << "[Screenshot]: " << error << std::endl;
+	else {
+		_recording = true;
+		_recorder = Recorder();
+		_renderer->appendToWindowTitle(" - [Recording]");
+		std::cout << "[Recorder] started" << std::endl;
 	}
+
+	return _recording;
 }
 
 void GLRenderWidget::keyReleaseEvent (QKeyEvent *event)
@@ -193,7 +248,8 @@ GLRenderer::GLRenderer () :
 	_left_key_down (false),
 	_forward (0),
 	_sideward (0),
-	_upward (0)
+	_upward (0),
+	_window_title("[ScGraph]: GGLRenderer - Press F1 for help")
 {
 	_rot_y = 0;
 	_rot_x = 0;
@@ -219,7 +275,7 @@ GLRenderer::GLRenderer () :
 	_main_window->setAttribute (Qt::WA_DeleteOnClose, false);
 	_main_window->setAttribute (Qt::WA_QuitOnClose, false);
 
-	_main_window->setWindowTitle ("[ScGraph]: GGLRenderer - Press F1 for help");
+	_main_window->setWindowTitle (_window_title);
 	_main_window->resize (SCGRAPH_QT_GL_RENDERER_DEFAULT_WIDTH, SCGRAPH_QT_GL_RENDERER_DEFAULT_HEIGHT);
 	_main_window->show ();
 
@@ -1165,6 +1221,9 @@ void GLRenderer::really_process_g (double delta_t)
 		_gl_widget->renderText (10, y_offset, "S - screenshot");
 		y_offset += 13;
 
+		_gl_widget->renderText (10, y_offset, "M - toggle recording");
+		y_offset += 13;
+
 		_gl_widget->renderText (10, y_offset, "UPARROW - forward");
 		y_offset += 13;
 
@@ -1340,6 +1399,16 @@ void GLRenderer::keyPressEvent (QKeyEvent *event)
 			return;
 		}
 		break;
+
+		case Qt::Key_M: 
+		{
+			if(event->isAutoRepeat() == false) {
+				_gl_widget->toggleRecording();
+			}
+			event->accept ();
+			return;
+		}
+		break;
 	
 		case Qt::Key_I:
 			_show_info = !_show_info;
@@ -1418,6 +1487,11 @@ void GLRenderer::keyReleaseEvent (QKeyEvent *event)
 void GLRenderer::set_done_action (int done_action)
 {
 	_done_action = done_action;
+}
+
+void GLRenderer::appendToWindowTitle (QString toAppend)
+{
+	_main_window->setWindowTitle (_window_title + toAppend);
 }
 
 extern "C"

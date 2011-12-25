@@ -33,7 +33,24 @@
 
 #include <QtOpenGL/QGLWidget>
 
+
 void writeImage (QImage img);
+
+class Recorder
+{
+
+	unsigned long int _current_frame;
+	QString _path;
+	QString _format;
+
+ public:
+	Recorder ();
+	void writeFrame (QImage img);
+
+	void nextFrame (QImage img);
+
+};
+
 
 class GLRenderer;
 
@@ -51,7 +68,11 @@ class GLRenderWidget : public QGLWidget
 
 	GLenum _shader_program;
 
+	bool _recording;
+Recorder _recorder;
+
 	GLEWContext _glew_context;
+
 	public:
 		GLEWContext *getGlewContext();
 
@@ -61,6 +82,7 @@ class GLRenderWidget : public QGLWidget
 		void paintGL ();
 		void initializeGL ();
 		void makeScreenshot ();
+		bool toggleRecording ();
 
 };
 
@@ -152,6 +174,9 @@ class GLRenderer : public QObject, public GUnit, public GraphicsVisitor, public 
 	float             _rot_x;
 	float             _rot_y;
 
+	QString _window_title;
+
+
 	void draw_face (const Face &face);
 
 	std::map <int, int> 
@@ -203,6 +228,8 @@ class GLRenderer : public QObject, public GUnit, public GraphicsVisitor, public 
 		virtual void visitRotationConst (const Rotation *r);
 		virtual void visitScaleConst (const Scale *s);
 		virtual void visitLinearConst (const Linear *l);
+
+		void appendToWindowTitle (QString toAppend);
 
 		void mousePressEvent (QMouseEvent *event);
 		void mouseReleaseEvent (QMouseEvent *event);
