@@ -10,10 +10,10 @@ class ObjLoader : public Loader3D
 {
 	void push_back (double n);
 
-	cow_ptr <Geometry> _geometry;
-
 	public:
 		void read_file (const std::string &file_name);
+		cow_ptr <Geometry> _geometry;
+
 
 		ObjLoader (const std::string &file_name) : 
 			  Loader3D (file_name),

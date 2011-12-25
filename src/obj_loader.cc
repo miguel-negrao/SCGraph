@@ -15,12 +15,14 @@ void ObjLoader::read_file (const std::string &file_name)
 	std::vector <Vector3D> _normals;
 	std::vector <Vector2D> _texture_coordinates;
 
+	std::cout << "[ObjLoader] Loading model in " << file_name << std::endl;
+
 
 	while (istream.good ())
 	{
 		istream.getline (buffer, 1023);
 
-		// std::cout << buffer << std::endl;
+		//std::cout << buffer << std::endl;
 		/* comments */
 		if (buffer[0] == '#')
 			continue;
@@ -31,7 +33,7 @@ void ObjLoader::read_file (const std::string &file_name)
 
 		stream >> linetype;
 
-		// std::cout << linetype << std::endl;
+	    //std::cout << linetype << std::endl;
 
 		if (linetype == "v")
 		{
