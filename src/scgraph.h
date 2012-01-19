@@ -25,6 +25,7 @@
 #include <QtGui/QApplication>
 #include <QtCore/QTimer>
 #include <QtCore/QReadWriteLock>
+#include <QtCore/QDebug>
 
 #include <QtGui/QWidget>
 #include <QtGui/QIcon>
@@ -50,6 +51,16 @@ class ScGraph : public QApplication
 		~ScGraph ();
 		static ScGraph* get_instance ();
 		static ScGraph* get_instance (int argc, char *argv[]);
+
+		// reimplemented from QApplication so we can throw exceptions in slots
+		virtual bool notify(QObject * receiver, QEvent * event) {
+			try {
+				return QApplication::notify(receiver, event);
+			} catch(std::exception& e) {
+				qCritical() << "Exception thrown:" << e.what();
+			}
+			return false;
+		}
 
 	public:
 #ifdef HAVE_JACK
