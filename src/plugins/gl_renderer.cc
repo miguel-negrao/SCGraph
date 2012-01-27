@@ -53,7 +53,9 @@ void Recorder::writeFrame (QImage img)
 		tmp.append(QString("%1").arg(_current_frame, 8, 10, QChar('0')));
 		tmp.append(".");
 		tmp.append(_format);
-		img.save(tmp);
+	
+		// set quality to 95/100
+		img.save(tmp, 0, 95);
 	}
 	catch (const char* error) {
 		std::cout << "[Recorder]: " << error << std::endl;
