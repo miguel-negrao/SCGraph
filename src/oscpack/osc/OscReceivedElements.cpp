@@ -31,6 +31,9 @@
 
 #include <cassert>
 
+#include <stdio.h>
+#include <string.h>
+
 #include "OscHostEndianness.h"
 
 
@@ -533,16 +536,23 @@ void ReceivedMessageArgumentIterator::Advance()
 //------------------------------------------------------------------------------
 
 ReceivedMessage::ReceivedMessage( const ReceivedPacket& packet )
-    : addressPattern_( packet.Contents() )
 {
-    Init( packet.Contents(), packet.Size() );
+	size = packet.Size();
+	message = new char [size];
+	memcpy(message, packet.Contents(), size);// * sizeof(unsigned long));
+	addressPattern_ = message;
+    Init( message, size );
 }
 
 
 ReceivedMessage::ReceivedMessage( const ReceivedBundleElement& bundleElement )
     : addressPattern_( bundleElement.Contents() )
 {
-    Init( bundleElement.Contents(), bundleElement.Size() );
+	size = bundleElement.Size();
+	message = new char [size];
+	memcpy(message, bundleElement.Contents(), size);// * sizeof(unsigned long));
+	addressPattern_ = message;
+    Init( message, size );
 }
 
 
@@ -558,7 +568,7 @@ uint32 ReceivedMessage::AddressPatternAsUInt32() const
 }
 
 
-void ReceivedMessage::Init( const char *message, unsigned long size )
+void ReceivedMessage::Init( const char *msg, unsigned long size )
 {
     if( size == 0 )
         throw MalformedMessageException( "zero length messages not permitted" );

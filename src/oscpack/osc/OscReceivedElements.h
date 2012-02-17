@@ -456,6 +456,8 @@ private:
 	const char *typeTagsBegin_;
 	const char *typeTagsEnd_;
     const char *arguments_;
+	char *message;
+	unsigned long size;
 };
 
 
