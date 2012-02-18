@@ -548,9 +548,10 @@ ReceivedMessage::ReceivedMessage( const ReceivedPacket& packet )
 ReceivedMessage::ReceivedMessage( const ReceivedBundleElement& bundleElement )
     : addressPattern_( bundleElement.Contents() )
 {
+	// Hack: Copy every osc message on receive. (see commit c2a6464)
 	size = bundleElement.Size();
 	message = new char [size];
-	memcpy(message, bundleElement.Contents(), size);// * sizeof(unsigned long));
+	memcpy(message, bundleElement.Contents(), size);
 	addressPattern_ = message;
     Init( message, size );
 }
