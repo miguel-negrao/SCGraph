@@ -39,10 +39,9 @@ Circle::Circle () :
     face.touch()->_vertices.push_back(Vector3D (0, 0, 0));
     face.touch()->_normals.push_back(Vector3D (0, 0, 1));
     for(int i=0; i <= _segments; i++) {
-	phi = TAU * ((float) i/(float) _segments);
-	face.touch()->_vertices.push_back(Vector3D (sin(phi), 
-						    cos(phi), 0));
-	face.touch()->_normals.push_back(Vector3D (0, 0, 1));
+		phi = TAU * ((float) i/(float) _segments);
+		face.touch()->_vertices.push_back(Vector3D (sin(phi), cos(phi), 0));
+		face.touch()->_normals.push_back(Vector3D (0, 0, 1));
     }
 
     face.touch()->_face_color = ColorRGBA(1,1,1,1);
@@ -58,29 +57,24 @@ Circle::~Circle ()
 void Circle::process_g (double delta_t)
 {
     _graphics_outs[0]._graphics.clear();
-    if (_segments != (int) *_control_ins[0]) {
-	if(((int) *_control_ins[0]) > 2) {
-	    _segments = (int) *_control_ins[0];
 
-	    _g.touch()->_faces[0].touch()->_vertices.clear();
-      	    _g.touch()->_faces[0].touch()->_normals.clear();
+    if (_segments != (int) *_control_ins[0] && (int) *_control_ins[0] > 2) {
+		_segments = (int) *_control_ins[0];
 
-	    // face.touch()->_material._emissive_color._c[0] = 1.0;
-	    float phi = 0;
+		_g.touch()->_faces[0].touch()->_vertices.clear();
+		_g.touch()->_faces[0].touch()->_normals.clear();
 
-	    _g.touch()->_faces[0].touch()->_vertices.push_back(
-		Vector3D (0, 0, 0));
-	    _g.touch()->_faces[0].touch()->_normals.push_back(
-		Vector3D (0, 0, 1));
-	    for(int i=0; i <= _segments; i++) {
-		phi = TAU * ((float) i/(float) _segments);
-		_g.touch()->_faces[0].touch()->_vertices.push_back(
-		    Vector3D (sin(phi), cos(phi), 0));
-		_g.touch()->_faces[0].touch()->_normals.push_back(
-		    Vector3D (0, 0, 1));
-	    }
+		// face.touch()->_material._emissive_color._c[0] = 1.0;
+		float phi = 0;
+
+		_g.touch()->_faces[0].touch()->_vertices.push_back(Vector3D (0, 0, 0));
+		_g.touch()->_faces[0].touch()->_normals.push_back(Vector3D (0, 0, 1));
+		for(int i=0; i <= _segments; i++) {
+			phi = TAU * ((float) i/(float) _segments);
+			_g.touch()->_faces[0].touch()->_vertices.push_back(Vector3D (sin(phi), cos(phi), 0));
+			_g.touch()->_faces[0].touch()->_normals.push_back(Vector3D (0, 0, 1));
+		}
 	}
-    }
 
     _graphics_outs[0]._graphics.push_back(_g);
 }
