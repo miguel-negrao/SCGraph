@@ -57,6 +57,7 @@ void BinaryOp::process_g (double delta_t)
 		break;
 
 		default:
+			std::cout << "[BinaryOp]: BinaryOp ignored. Only + is supported for graphics rate right now." << std::endl;
 		break;
 	}
 }

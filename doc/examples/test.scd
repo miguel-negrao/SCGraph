@@ -66,3 +66,7 @@ SynthDef(\WobblingCube, {
 	GGLRenderer.gr(source);
 }).play(g);
 )
+
+
+// test graphics busses
+x = { Out.gr(9999, GCube.gr) }.play(g)

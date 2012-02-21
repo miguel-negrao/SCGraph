@@ -119,8 +119,8 @@ void TexturePool::traverse_directory (const std::string &directory, void (Textur
 
 unsigned int TexturePool::add_image (const std::string &filename, unsigned int index)
 {
-  add_image(filename);
-  return _textures.size() - 1;
+	add_image(filename);
+	return _textures.size() - 1;
 }
 
 void TexturePool::add_image (const std::string &filename)
