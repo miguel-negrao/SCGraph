@@ -5,42 +5,48 @@
 
 class In : public GUnit
 {
-	public:
-		In ()
+ public:
+	In () :
+	_bus (0)
 		{
 			/* we have a single graphics rate output */
 			// cow_ptr<GraphicsBus> b (new GraphicsBus);
 			// _graphics_outs.push_back (b);
 		}
 
-		void process_g (double delta_t);
-		void process_c (double delta_t);
+	size_t _bus;
+	void process_g (double delta_t);
+	void process_c (double delta_t);
 };
 
 // TODO: Multi in and multi out
 
 class Out : public GUnit
 {
-	public:
-		Out ()
+ public:
+	Out () :
+	_bus (0)
 		{
 			/* we have no outputs, thus, nothing to do */
 		}
 
-		void process_g (double delta_t);
-		void process_c (double delta_t);
+	size_t _bus;
+	void process_g (double delta_t);
+	void process_c (double delta_t);
 };
 
 class ReplaceOut : public GUnit
 {
-	public:
-		ReplaceOut ()
+ public:
+	ReplaceOut () :
+	_bus (0)
 		{
 			/* we have no outputs, thus, nothing to do */
 		}
 
-		void process_g (double delta_t);
-		void process_c (double delta_t);
+	size_t _bus;
+	void process_g (double delta_t);
+	void process_c (double delta_t);
 };
 
 #endif
