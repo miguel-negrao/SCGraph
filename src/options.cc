@@ -50,7 +50,7 @@ Options::Options (int argc, char *argv[]) :
 	_plugin_path         (PREFIX "/lib/scgraph/plugins"),
 	_sc_plugin_path      (SC3_PLUGIN_PATH)
 {
-	char options[] = "u:vhf:c:r:p:j:s:";
+	char options[] = "u:vhf:c:g:r:p:j:s:";
 
 	int ret;
 
@@ -61,6 +61,11 @@ Options::Options (int argc, char *argv[]) :
 			case 'c':
 				_control_busses = atoi (optarg);
 			break;
+
+		    case 'g':
+				_graphics_busses = atoi (optarg);
+			break;
+
 
 			case 'p':
 				_control_prio = atoi (optarg);
@@ -147,6 +152,12 @@ Options::Options (int argc, char *argv[]) :
 		_sc_plugin_path = tmp;
 	}
 
+	if ((tmp = getenv ("SCGRAPH_RECORDING_PATH")))
+	{
+		_recording_path = tmp;
+	}
+
+
 	if (_verbose)
 	{
 		std::cout << "[Options]:"<< std::endl 
@@ -171,6 +182,7 @@ void Options::print_usage ()
 	          << "    -u <port>   the UDP port to listen on (default: " << _port << ")" << std::endl
 	          << "    -f <rate>   set the control rate (Hz)" << std::endl
 	          << "    -c <num>    set the number of control busses" << std::endl
+	          << "    -g <num>    set the number of graphics busses" << std::endl
 	          << "    -p <num>    set the realtime prio of the control loop (default: 0 (no RT))" << std::endl
 	          << "    -r <rate>   set the graphic rate (Hz)" << std::endl
 	          << "    -s <file>   create (persistent) synth from SynthDef file" << std::endl
@@ -182,5 +194,6 @@ void Options::print_usage ()
 	          << "    SCGRAPH_SHADER_PATH (not supported yet)" << std::endl
 	          << "    SCGRAPH_PLUGIN_PATH" << std::endl
 	          << "    SCGRAPH_SC_PLUGIN_PATH" << std::endl
+	          << "    SCGRAPH_RECORDING_PATH" << std::endl
 	          << "  Specifying either overwrites the respective default path (see -v)" << std::endl;
 }

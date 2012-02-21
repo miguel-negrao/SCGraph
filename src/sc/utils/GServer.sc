@@ -91,9 +91,6 @@ GServer : Server {
 
 GServerOptions : ServerOptions
 {
-	var <protocol = \udp;
-
-	var <>numControlBusChannels = 1024;
 	var <>controlRate = 100;
 	var <>graphicsRate = 50;
 	var <>realtimePriority = 0;
@@ -103,16 +100,28 @@ GServerOptions : ServerOptions
 	var <>shaderPath;
 	var <>pluginPath;
 	var <>scPluginPath;
+	var <>recordingPath;
 
 	var <>persistentSynth;
 
-	var <>verbosity = 0;
-	var <>zeroConf = false; // Whether server publishes port to Bonjour, etc.
+	*new {
+		^super.new.init()
+	}
 
-	var <>restrictedPath;
+	init {
+		// set the right defaults for a GServer
+		numControlBusChannels = 1024;
+		numInputBusChannels = 0;
+		numOutputBusChannels = 1;
+		
+		protocol = \udp;
 
-	var <>initialNodeID = 1000;
-	var <>remoteControlVolume = false;
+		numPrivateAudioBusChannels = 15;
+	}
+
+	protocol_ {
+		warn("SCGraph only supports udp.")
+	}
 
 	pathsAsExports {
 		var o = "";
@@ -121,7 +130,8 @@ GServerOptions : ServerOptions
 			texturePath, "SCGRAPH_TEXTURE_PATH",
 			shaderPath, "SCGRAPH_SHADER_PATH",
 			pluginPath, "SCGRAPH_PLUGIN_PATH",
-			scPluginPath, "SCGRAPH_SC_PLUGIN_PATH"].pairsDo{
+			scPluginPath, "SCGRAPH_SC_PLUGIN_PATH",
+			recordingPath, "SCGRAPH_RECORDING_PATH"].pairsDo{
 				|path,envVar|
 				if(path.notNil, {
 					if(File.exists(path), {
@@ -147,6 +157,9 @@ GServerOptions : ServerOptions
 		if (numControlBusChannels != 4096, {
 			o = o ++ " -c " ++ numControlBusChannels;
 		});
+		if (this.numGraphicsBusChannels != 10, {
+			o = o ++ " -g " ++ this.numGraphicsBusChannels;
+		});
 		if (verbosity != 0, {
 			o = o ++ " -" ++ (verbosity.collect{ "v" }.join);
 		});
@@ -168,5 +181,9 @@ GServerOptions : ServerOptions
 		});
 
 		^o
+	}
+
+	numGraphicsBusChannels {
+		^numPrivateAudioBusChannels + numInputBusChannels + numOutputBusChannels
 	}
 }
