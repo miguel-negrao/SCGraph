@@ -102,7 +102,7 @@ include_directories(${SC_PATH}/external_libraries/libsndfile)
 ################################################################################
 
 add_definitions(
-  -DSC3_PLUGIN_PATH="${SC_PATH}/build/SuperCollider/plugins"
+  -DSC3_PLUGIN_PATH="${SC3_PLUGIN_PATH}"
   -DPREFIX="${CMAKE_INSTALL_PREFIX}")
 
 if(APPLE)

@@ -1,7 +1,8 @@
 - Requirements:
 
  - Qt 4.2+          (http://trolltech.com)
- - SuperCollider 3.5 (http://supercollider.sf.net) - You need a build with development files installed.
+ - SuperCollider 3.5 (http://supercollider.sf.net) 
+   - You need to build scsynth as shared library (cmake -DLIBSCSYNTH=1 ..)
  - Boost            (http://www.boost.org/)
  - CMake            (http://www.cmake.org/)
  - pkg-config       (http://pkgconfig.freedesktop.org/wiki/)
@@ -29,7 +30,14 @@
 
  mkdir build
  cd build/ && cmake ..
+
+ You'd perhaps have to adjust the path to the shared library, the sources and the supercollider ugens e. g. with "ccmake ..". After that you can run
+
  make
+
+ and optionally
+ 
+ make install
 
 - Highlighting of .gr in emacs
 

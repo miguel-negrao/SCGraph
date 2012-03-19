@@ -27,14 +27,12 @@ configure_file(
   "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
   IMMEDIATE @ONLY)
 
-set(SC3_LIBRARY_PATH "/Applications/SuperCollider")
-
 add_subdirectory(src)
 
 ################################################################################
 
 add_custom_target(uninstall
-  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+3  "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
 
 ################################################################################
 
@@ -76,6 +74,26 @@ option(JACK "Build with jack support for the FFT UGen")
 # if (OSX_PACKAGE)
 #   add_subdirectory(osx_package)
 # endif()
+
+
+
+if (LINUX)
+   find_path(SC3_LIBRARY_PATH "libscsynth.so" 
+	 HINTS "/usr/lib"
+	 "/usr/local/lib" DOC "Path where libscsynth is found")
+   find_path(SC3_PLUGIN_PATH "MulAddUGens.so"
+	 HINTS "/usr/lib/SuperCollider/plugins"
+	 "/usr/local/SuperCollider/plugins" DOC "Path where the UGens are found")
+elseif(APPLE)
+   find_path(SC3_LIBRARY_PATH "libscsynth.dylib" 
+	 HINTS "/usr/lib" "/usr/local/lib"
+	 "/Applications/SuperCollider/SuperCollider.app/Contents/Resources"
+	 DOC "Path where libscsynth is found")
+   find_path(SC3_PLUGIN_PATH "MulAddUGens.scx"
+	 HINTS "/usr/lib" "/usr/local/lib"
+	 "/Applications/SuperCollider/SuperCollider.app/Contents/Resources/plugins"
+	 DOC "Path where the UGens are found")
+endif(LINUX)
 
 
 set(plugins "")
