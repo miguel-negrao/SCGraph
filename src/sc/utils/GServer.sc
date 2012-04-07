@@ -161,7 +161,7 @@ GServerOptions : ServerOptions
 			o = o ++ " -g " ++ this.numGraphicsBusChannels;
 		});
 		if (verbosity != 0, {
-			o = o ++ " -" ++ (verbosity.collect{ "v" }.join);
+			o = o ++ " -v " ++ verbosity.clip(0,5);
 		});
 		if (controlRate.notNil, {
 			o = o ++ " -f " ++ controlRate;

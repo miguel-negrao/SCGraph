@@ -50,7 +50,7 @@ Options::Options (int argc, char *argv[]) :
 	_plugin_path         (PREFIX "/lib/scgraph/plugins"),
 	_sc_plugin_path      (SC3_PLUGIN_PATH)
 {
-	char options[] = "u:vhf:c:g:r:p:j:s:";
+	char options[] = "u:c:v:g:f:r:p:j:s:h";
 
 	int ret;
 
@@ -94,7 +94,7 @@ Options::Options (int argc, char *argv[]) :
 			break;
 
 			case 'v':
-				_verbose += 1;
+				_verbose = atoi (optarg);
 			break;
 
 			case 'h':
@@ -186,7 +186,7 @@ void Options::print_usage ()
 	          << "    -p <num>    set the realtime prio of the control loop (default: 0 (no RT))" << std::endl
 	          << "    -r <rate>   set the graphic rate (Hz)" << std::endl
 	          << "    -s <file>   create (persistent) synth from SynthDef file" << std::endl
-	          << "    -v          increase output verbosity (multiple -v are possible)" << std::endl
+	          << "    -v <level>  output verbosity (min: 0, max: 5)" << std::endl
 	          << "    -h          show this help text" << std::endl;
 	std::cout << "  ScGraph also honours these environment variables:" << std::endl
 	          << "    SCGRAPH_SYNTHDEF_PATH" << std::endl
