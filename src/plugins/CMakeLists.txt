@@ -9,7 +9,7 @@ endif()
 ### sources
 
 set(plugins_srcs bordered_rectangle circle cube gl_renderer model translate rotate
-stretch binary_op mul_add color light line points triangle rectangle
+stretch binary_op sum3 sum4 mul_add color light line points triangle rectangle
 polygon quad blending lighting culling tube transformation material shader_program)
 
 ################################################################################
