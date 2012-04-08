@@ -36,12 +36,12 @@ endif()
 
 include_directories(${CMAKE_BINARY_DIR})
 
-include_directories(${SC_PATH}/include/plugin_interface)
-include_directories(${SC_PATH}/include/common)
-include_directories(${SC_PATH}/include/server) # for SC_Group.h
+include_directories(${SC3_SOURCES_PATH}/include/plugin_interface)
+include_directories(${SC3_SOURCES_PATH}/include/common)
+include_directories(${SC3_SOURCES_PATH}/include/server) # for SC_Group.h
 
-include_directories(${SC_PATH}/external_libraries/libsndfile)
-#include_directories(${SC_PATH}/external_libraries/oscpack/)
+include_directories(${SC3_SOURCES_PATH}/external_libraries/libsndfile)
+#include_directories(${SC3_SOURCES_PATH}/external_libraries/oscpack/)
 
 include_directories(../glew)
 include_directories(../oscpack)

@@ -37,10 +37,10 @@ add_custom_target(uninstall
 ################################################################################
 
 find_package(SuperCollider3)
-if (NOT SC_FOUND)
-	message(SEND_ERROR "cannot find SuperCollider3 headers. Set the variable SC_PATH.")
+if (NOT SC3_SOURCES_FOUND)
+	message(SEND_ERROR "Cannot find SuperCollider3 headers. Please set the variable SC3_SOURCES_PATH.")
 else()
-	message(STATUS "Using SC source located at ${SC_PATH}")
+	message(STATUS "Using SC source located at ${SC3_SOURCES_PATH}")
 endif()
 
 ################################################################################

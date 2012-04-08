@@ -88,16 +88,16 @@ qt4_add_resources( scgraph_rcc resources.qrc )
 ################################################################################
 # sc includes
 
-include_directories(${SC_PATH}/common)
-include_directories(${SC_PATH}/plugin_interface)
+include_directories(${SC3_SOURCES_PATH}/common)
+include_directories(${SC3_SOURCES_PATH}/plugin_interface)
 
-include_directories(${SC_PATH}/include/server) # for SC_Group.h
-include_directories(${SC_PATH}/include/plugin_interface)
-include_directories(${SC_PATH}/include/common)
+include_directories(${SC3_SOURCES_PATH}/include/server) # for SC_Group.h
+include_directories(${SC3_SOURCES_PATH}/include/plugin_interface)
+include_directories(${SC3_SOURCES_PATH}/include/common)
 
-include_directories(${SC_PATH}/server/plugins) # for FFT_UGens.h
+include_directories(${SC3_SOURCES_PATH}/server/plugins) # for FFT_UGens.h
 
-include_directories(${SC_PATH}/external_libraries/libsndfile)
+include_directories(${SC3_SOURCES_PATH}/external_libraries/libsndfile)
 
 ################################################################################
 

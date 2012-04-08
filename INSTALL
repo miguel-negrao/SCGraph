@@ -31,7 +31,7 @@
  mkdir build
  cd build/ && cmake ..
 
- You'd perhaps have to adjust the path to the shared library, the sources and the supercollider ugens e. g. with "ccmake ..". After that you can run
+ You'd perhaps have to adjust the path to the shared library, the sources and the supercollider plugins e. g. with "ccmake ..". After that you can run
 
  make
 
