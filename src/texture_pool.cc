@@ -89,7 +89,8 @@ void TexturePool::traverse_directory (const std::string &directory, void (Textur
 	struct dirent *dirent;
 	while ((dirent = readdir (dir)))
 	{
-		if ((std::string (dirent->d_name) == std::string (".")) || (std::string (dirent->d_name) == std::string ("..")))
+		if ((std::string (dirent->d_name) == std::string (".")) 
+			|| (std::string (dirent->d_name) == std::string ("..")))
 			continue;
  
 		if (dirent->d_type == DT_DIR)
@@ -128,58 +129,74 @@ void TexturePool::add_image (const std::string &filename)
 	Options *options = Options::get_instance ();
 
 	if (options->_verbose >= 2)
-		std::cout << "[TexturePool]: Adding texture image: " << filename << std::endl;
+		std::cout << "[TexturePool]: Adding texture: " << filename << std::endl;
 
 	try
-            {
+	{
 
-                const char * tmp = filename.c_str();
-                QImage image(tmp);
+		const char * tmp = filename.c_str();
+		QImage image(tmp);
           
- 
-		int im_width, im_height, tex_width, tex_height;
+		if(image.isNull()) {
+			std::cout << "  [TexturePool]: Unrecognized Image Format. No texture loaded." 
+					  << std::endl;
+			std::cout << "                 Supported Formats:";
+			for (int i = 0; i < QImageReader::supportedImageFormats().size(); ++i)
+			{
+				std::cout << " " << QImageReader::supportedImageFormats().at(i).data();
+			}
+			std::cout << "." << std::endl;
+		}
+		else
+		{
+			int im_width, im_height, tex_width, tex_height;
 
-		im_width = image.width();
-		im_height = image.height();
+			im_width = image.width();
+			im_height = image.height();
 	
-		tex_width =  (int)pow(2,(int)ceil(log2(im_width)));
-		tex_height = (int)pow(2,(int)ceil(log2(im_height)));
+			tex_width =  (int)pow(2,(int)ceil(log2(im_width)));
+			tex_height = (int)pow(2,(int)ceil(log2(im_height)));
 
-		if (options->_verbose >= 2)
-                    {
-			std::cout << "  [TexturePool]: Texture Width/Height: " << tex_width << "/" << tex_height << std::endl;
-			std::cout << "  [TexturePool]: Image source Width/Height: " << im_width << "/" << im_height << std::endl;
-                    }
+			if (options->_verbose >= 2)
+			{
+				std::cout << "  [TexturePool]: Texture Width/Height: " << tex_width 
+						  << "/" << tex_height << std::endl;
+				std::cout << "  [TexturePool]: Image source Width/Height: " << im_width 
+						  << "/" << im_height << std::endl;
+			}
 
-		// std::cout << width << " " << height << std::endl;
+			// std::cout << width << " " << height << std::endl;
 	
-		boost::shared_ptr<Texture> t(new Texture (tex_width, tex_height, 4));
+			boost::shared_ptr<Texture> t(new Texture (tex_width, tex_height, 4));
 
-		for (int i = 0; i < im_width; ++i)
-                    {
-			for (int j = 0; j < im_height; ++j)
-                            {
-				/* swap image */
-				QRgb color = image.pixel(i,im_height - j - 1);
-                                //std::cout << qAlpha(color) << std::endl;
+			for (int i = 0; i < im_width; ++i)
+			{
+				for (int j = 0; j < im_height; ++j)
+				{
+					/* swap image */
+					QRgb color = image.pixel(i,im_height - j - 1);
+					//std::cout << qAlpha(color) << std::endl;
 
-                                int tmpIndex = 4 * (tex_width * j + i);
-				t->_data[tmpIndex]     = (unsigned char) qRed(color);
-				t->_data[tmpIndex + 1] = (unsigned char) qGreen(color);
-				t->_data[tmpIndex + 2] = (unsigned char) qBlue(color);
-				t->_data[tmpIndex + 3] = (unsigned char) qAlpha(color);
-                            }
-                    }
-		_textures.push_back (t);
+					int tmpIndex = 4 * (tex_width * j + i);
+					t->_data[tmpIndex]     = (unsigned char) qRed(color);
+					t->_data[tmpIndex + 1] = (unsigned char) qGreen(color);
+					t->_data[tmpIndex + 2] = (unsigned char) qBlue(color);
+					t->_data[tmpIndex + 3] = (unsigned char) qAlpha(color);
+				}
+			}
+			_textures.push_back (t);
 	
-		if (options->_verbose >= 2)
-                    std::cout << "  [TexturePool]: New texture has index: " << _textures.size() - 1 << std::endl;
+			if (options->_verbose >= 2)
+				std::cout << "  [TexturePool]: New texture has index: " 
+						  << _textures.size() - 1 << std::endl;
 	
-		emit (textures_changed());
-            }
+			emit (textures_changed());
+		}
+	}
 	catch (const char* error)
 	{
-		std::cout << "[TexturePool]: Problem loading texture: " << error  << std::endl;
+		std::cout << "[TexturePool]: Problem loading texture: " 
+				  << error  << std::endl;
 	}
 	// emit(texture_added(_textures.size () - 1));
 }

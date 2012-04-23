@@ -7,6 +7,7 @@
 
 #include <QtCore/QObject>
 #include <QtGui/QImage>
+#include <QtGui/QImageReader>
 #include <QtGui/QColor>
 
 
