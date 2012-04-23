@@ -26,18 +26,56 @@
  E. g. if you are on Mac OS X and use homebrew, make sure it's set to:
     export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 
- The build system uses cmake, so:
+The build system uses cmake, so:
 
- mkdir build
- cd build/ && cmake ..
+create build directory:
+	   mkdir build
 
- You'd perhaps have to adjust the path to the shared library, the sources and the supercollider plugins e. g. with "ccmake ..". After that you can run
+	   cd build
+	   cmake ..
 
- make
+cmake will fail, so then do 
+	  ccmake ..
 
- and optionally
- 
- make install
+and edit the paths to point to:
+
+	SC3_SOURCES_PATH -> Root directory of the supercollider source tree
+ 	SC3_LIBRARY_PATH -> Directory which contains libscsynth (on a mac e. g.: /Applications/SuperCollider/SuperCollider.app/Contents/Resources)
+ 	SC3_PLUGIN_PATH -> Directory containing the UGens (on a mac e. g.: /Applications/SuperCollider/SuperCollider.app/Contents/Resources/plugins)
+
+Then build:
+
+	 make install
+
+create these folders:
+
+	   ~/.scgraph/synthdefs
+ 	   ~/.scgraph/textures
+
+Optionally set the env paths: in your ~/.bashrc add:
+
+   #scgraph
+   export SCGRAPH_SYNTHDEF_PATH=~/.scgraph/synthdefs
+   export SCGRAPH_TEXTURE_PATH=~/.scgraph/textures
+   export SCGRAPH_PLUGIN_PATH=/usr/local/lib/scgraph/plugins/
+
+
+You can also set/overwrite them with GServerOptions (see the help file).
+Open supercollider and do:
+
+(
+g = GServer.default;
+g.boot;
+)
+
+(
+SynthDef (\WobblingCube, {
+var source;
+source = GRotate.gr( GCube.gr(2), [0,1,0], SinOsc.kr(0.2).range(0, 360) );
+GGLRenderer.gr(source);
+}).play(target: g);
+)
+
 
 - Highlighting of .gr in emacs
 
