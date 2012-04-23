@@ -44,10 +44,11 @@ code::
 SynthDef (\WobblingCube, {
 	var source;
 	source = GCube.gr(size: SinOsc.kr(freq: 0.5));
-	Out.gr(source);
+	Out.gr(0, source);
 }).play(target: g);
 )
 ::
+
 
 
 This example shows that the original SuperCollider control rate units are still usable (SinOsc.kr creates a control rate instance of the SinOsc unit). A cube is produced that changes its size periodically with a frequency of 0.5Hz.

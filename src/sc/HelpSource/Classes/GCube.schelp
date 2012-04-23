@@ -25,7 +25,7 @@ g.makeWindow;
 
 (
 x = {
-	var cube = GCube.gr(50);
+	var cube = GCube.gr(3);
 	GGLRenderer.gr(cube, lighting: 0)
 }.play(g)
 )
@@ -43,13 +43,12 @@ x = {
 	var cube, size, stuff;
 	
 	stuff = (1..10).collect{
-		size = 50 * Decay.kr(Dust.kr(10));
-		GTranslate.gr(GColor.gr(GCube.gr(size), Color.rand.asArray), rray.fill(3, {1.0.rand}));
+		size = 2 * Decay.kr(Dust.kr(0.5), 3);
+		GTranslate.gr(GColor.gr(GCube.gr(size), Color.rand.asArray), Array.fill(3, {1.0.rand}));
 	}.sum;
 
 	GGLRenderer.gr(stuff, lighting: 0)
 }.play(g);
 )
-
 g.freeAll;
 ::
